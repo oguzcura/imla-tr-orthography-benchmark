@@ -1,0 +1,459 @@
+\documentclass[11pt]{article}
+
+% Change "review" to "preprint" for camera-ready / non-anonymous.
+\usepackage[review]{acl}
+% \usepackage{times}   % supplies Times; NOTE: lacks full T1/Turkish glyphs
+\usepackage{lmodern}   % Latin Modern: complete T1 incl. Turkish glyphs
+\usepackage{latexsym}
+\usepackage[T1]{fontenc}
+\usepackage{microtype}
+\usepackage{inconsolata}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{array}
+\setlength{\tabcolsep}{4pt}
+\usepackage{amsmath}
+\usepackage{url}
+
+\title{Copy What You See, Forget What You Know:\\
+Turkish Caret Orthography as a Surface-Form Priming Probe for Free-Tier LLMs}
+
+\author{Anonymous Authors}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Free-tier language models have quietly become the default writing surface for Turkish text---chat, social media, forums, school essays---yet their orthographic fidelity is almost never audited, because conventional evaluation needs human or LLM judges that are expensive or contaminated. Turkish orthography offers a rare countercase: the \emph{d{\"u}zeltme i{\c s}areti} (caret; k{\^a}r/kar ``profit''/``snow'') is governed by a finite rule set that a mechanical checker can verify with zero judges. We exploit this to run the first \emph{zero-judge, unprimed} audit of caret orthography in free-tier LLMs. We build a 216-prompt battery (180 informal chat/social/forum, 36 formal news/essay) in which the caret is never spelled and 36 target surfaces are elicited only by circumlocution (mechanically asserted: 0 caret glyphs, 0 bare target spellings); we score outputs with a rule checker over 13 TDK Yaz{\i}m K{\i}lavuzu-vs-GTS rulings (RULINGS13; POS/collocation-gated; 22-positive/20-negative validation, precision 1.00, recall 1.00). Across 864 free API calls totaling \$0.00---with all four live price==0 OpenRouter endpoints verified prompt==0/completion==0 at run time---\textbf{61.1\%} [54.6, 67.2] of caret occurrences are dropped and \textbf{17.3\% of texts} (95\% CI [14.6, 20.4]) contain at least one caret drop. The same endpoints drop only 9.0\% of occurrences when prompts spell the caret (cross-run, flagged); the occurrence-level model-spread ($p{=}9.2\times10^{-12}$) and priming ($p{=}6.2\times10^{-28}$) contrasts are robust to full-space Bonferroni correction. Text-level register (27.8\% vs.\ 15.1\%) and model (20.4\% vs.\ 11.1\%) contrasts withstand Holm's step-down over the six headline claims and are reported as suggestive; the text-level priming leg is \emph{not} significant ($p{=}0.074$)---the priming signal lives at the occurrence level. Caret knowledge in these models is imitative, not productive: they copy what they see and, left unprimed, forget what they know. The full pipeline---battery, checker, scorer, data, checksums---is released for perpetual, credit-free orthography monitoring.
+\end{abstract}
+
+\section{Introduction}
+
+Turkish orthography is unusual among ``small'' language features: a single diacritic, the \emph{d{\"u}zeltme i{\c s}areti} (caret), separates words that are otherwise homographs---\emph{k{\^a}r} (profit) vs.\ \emph{kar} (snow), \emph{h{\^a}l{\^a}} (still) vs.\ \emph{hala} (aunt), \emph{adet} (number) vs.\ \emph{{\^a}det} (custom)---and marks more than thirty registered headwords such as \emph{h{\"u}k{\^u}met}, \emph{r{\"u}zg{\^a}r}, \emph{sanatk{\^a}r} and the nine \emph{nispet-ek} attribute adjectives (\emph{mill{\^i}}, \emph{resm{\^i}}, \emph{din{\^i}}, \ldots). The rules are codified in the official word list and writing guide \cite{tdk2012}, and each word's canonical headword form can be checked against the TDK's live dictionary, the G{\"u}ncel T{\"u}rk{\c c}e S{\"o}zl{\"u}k (GTS) \cite{gts2026}. This makes the caret axis \emph{rule-verifiable}: an output is either compatible with the rules or not, with no judge in the loop.
+
+Meanwhile, free-tier endpoints (price==0) have become the de facto production surface for Turkish text generation---casual chat, social posts, forum replies, homework essays. Their quality is typically evaluated through human preference or LLM-as-judge pipelines, both of which are expensive, noisy, and, in the case of LLM judges, themselves subject to the very surface-fidelity failures we measure (an LLM judge that drops carets is a lenient judge of caret drops). A mechanical, rule-verifiable audit sidesteps all three problems.
+
+This paper contributes:
+
+\begin{itemize}
+\item \textbf{A zero-judge audit protocol for a rule-based orthography axis.} A 216-prompt \emph{unprimed} battery in which the evaluated spelling is never shown (mechanically asserted: 0 caret glyphs, 0 bare target spellings across all prompts), scored by a rule checker encoding 13 individually-documented TDK-vs-GTS rulings (RULINGS13) with POS and collocation gates and a 22-positive/20-negative validation set (precision 1.00, recall 1.00).
+\item \textbf{The first unprimed caret-orthography audit of free-tier LLMs.} Across 864 API calls totaling \$0.00 (four live price==0 endpoints, run-time price verification), free-tier models drop the caret in \textbf{17.3\%} of texts [14.6, 20.4] and in \textbf{61.1\%} [54.6, 67.2] of caret occurrences; exposed-only texts are flagged at 64.0\% [56.7, 70.7].
+\item \textbf{Quantified priming dependence.} The same three endpoints keep carets when prompts spell them (9.0\% occurrence drop in the v2 primed cross-run) and drop them when only the topic is cued---a \emph{copy-vs-know} failure that inverts the register gradient: formal registers are \emph{better} than informal under priming, \emph{worse} unprimed. This contrast is cross-run (flagged, not randomized).
+\item \textbf{A fully released, credit-free pipeline.} Battery, checker, scorer, raw records, machine-readable results, and md5 checksums are released; the method is a template for perpetual orthography monitoring on free tiers.
+\end{itemize}
+
+\section{Background and Related Work}
+
+\subsection{Turkish orthography as a rule-verifiable axis}
+
+The caret marks (i) long-vowel loans of Arabic/Persian origin whose bare form would otherwise be mispronounced (\emph{k{\^a}{\u{g}}{\i}t}, \emph{h{\"u}k{\^u}met}, \emph{r{\"u}zg{\^a}r}, \emph{sanatk{\^a}r}); (ii) the \emph{nispet ek} adjective suffix -{\^i} (\emph{mill{\^i}}, \emph{resm{\^i}}); and (iii) minimal pairs where the bare form has a live distinct meaning (\emph{k{\^a}r}/\emph{kar}) \cite{tdk2012}. The official guide is not always congruent with the live dictionary: for each minimal pair we record both sources and adjudicate (RULINGS13, \S\ref{sec:app-divergence}); e.g., the guide lists \emph{K{\^a}z{\i}m} while GTS registers only \emph{kaz{\i}m} ``the act of digging'', so GTS wins and the word is neither flagged nor elicited (documented tension \cite{tdk2012,gts2026}).
+
+\subsection{Turkish grammatical-error correction}
+
+GECTurk provides 12{,}053 labeled errors over 10{,}986 sentences across 10 error categories \cite{gecturk2023}. An organic-data GEC approach mines correction pairs from Wikipedia edit history, and reports that LLMs trained on such data outperform prior Turkish GEC models \cite{organicgec2024}. Both lines measure \emph{repair}---given a defaced sentence, restore it---which is precisely the setting in which models succeed at orthography (the caret is present in the input, so copying suffices). Ours measures \emph{autonomous production}: no exemplar exists in the prompt, so the caret must be retrieved from knowledge.
+
+\subsection{Noisy Turkish text}
+
+Real written Turkish is itself noisy: NoisyWikiTr is a large noisy-parallel Turkish corpus mined from Wikipedia edits (train/val/test splits, md5-pinned on Zenodo) \cite{noisywiki2025}. Its existence quantifies the distribution a model is trained on: caret drops and other orthographic deviations are frequent enough in the wild that an imitative model will reproduce them.
+
+\subsection{Turkish and multilingual evaluation hygiene}
+
+Turkish evaluation infrastructure has matured---TurkishMMLU extends MMLU to Turkish \cite{turkishmmlu2024}, M-IFEval evaluates multilingual instruction following but does not cover Turkish \cite{mifeval2025}, and TurkBench spans 21 subtasks in six categories \cite{turkbench2026}. None of these axes grades \emph{orthographic production under unprimed elicitation}: multiple-choice accuracy and instruction-following are consumption tasks, and instruction-following prompts typically spell the very surface forms we audit.
+
+\subsection{Surface-fidelity and leakage audits}
+
+Closest in spirit are work on data contamination, which asks whether \emph{evaluation} surfaces leak into \emph{training} \cite{yao2024,ahuja2024,arabic2026,transpcards2024,powercal2026}, and on under-trained tokens, which asks whether models know the \emph{spellings} of rare words at all \cite{magikarp2024}. Power-calibrated audits add the crucial discipline that ``no evidence'' is not ``clean'': detectors have measurable power limits \cite{powercal2026}. Our contribution flips the standard direction: instead of auditing benchmark integrity (consumption side), we audit the model's own production against a rule book, using the same zero-cost, black-box methodology, and we are careful to report audit power (exposure rates, confidence intervals, conservative gates) rather than bare point estimates.
+
+\section{Design and Method}
+
+\subsection{Battery: unprimed, register-balanced, mechanically asserted}
+
+The battery \texttt{prompts3.py} contains \textbf{216 prompts}: informal 180 (chat 60, social 60, forum 60) and formal 36 (news 18, essay 18). All target words are elicited by circumlocution so that the caret word is the natural word---e.g., ``net gelir fazlas{\i}'' $\rightarrow$ \emph{k{\^a}r}, ``ulusal futbol tak{\i}m{\i}'' $\rightarrow$ \emph{mill{\^i} tak{\i}m}, ``Mekke'deki kutsal yap{\i}'' $\rightarrow$ \emph{K{\^a}be}, ``yaz{\i}c{\i} malzemesi'' $\rightarrow$ \emph{k{\^a}{\u{g}}{\i}t}---without ever spelling it. The unprimed guarantee is a hard, machine-checked assertion over all 216 prompts:
+
+\begin{quote}
+\small \texttt{[assert\_unprimed] OK: 216 prompts, 0 caret glyphs, 0 bare target spellings}
+\end{quote}
+
+Generation uses temperature 0, \texttt{max\_tokens=600} (2{,}000 for the reasoning endpoint minimax-m2.7), one sample per prompt.
+
+\textbf{Targets.} The release lexicon covers \textbf{36 flaggable surface forms} across three tiers (\S\ref{sec:app-divergence}):
+
+\begin{itemize}
+\item \textbf{Tier A}---bare never standard (GTS registers only the caret form): \emph{k{\^a}{\u{g}}{\i}t, r{\"u}zg{\^a}r, h{\"u}k{\^u}met, sanatk{\^a}r, k{\^a}tip, k{\^a}inat, K{\^a}be, h{\^a}len} (plus orthographic variants \emph{ruzgar}, \emph{hukumet}).
+\item \textbf{Tier B}---nine \emph{nispet-ek} attribute adjectives whose caret headword is GTS-live-verified: \emph{mill{\^i}, resm{\^i}, din{\^i}, tarih{\^i}, ilm{\^i}, asker{\^i}} and the three v3 additions \emph{fikr{\^i}, hiss{\^i}, zihn{\^i}}. Eleven near-candidates were \emph{excluded} after live GTS checks because the modern dictionary registers them caret-free (e.g., \emph{hukuk{\^i}, idar{\^i}, siyas{\^i}, adl{\^i}, iktisad{\^i}, vicdan{\^i}, akl{\^i}, {\c s}ahs{\^i}, kanun{\^i}, keyf{\^i}, ahl{\^a}k{\^i}}).
+\item \textbf{Tier C}---13 minimal pairs, each with an individual k{\i}lavuz-vs-GTS ruling (\S\ref{sec:app-divergence}): \emph{k{\^a}r/kar, h{\^a}l/hal, h{\^a}l{\^a}/hala, {\^a}det/adet, {\^a}{\c s}{\i}k/a{\c s}{\i}k, {\^a}lem/alem, m{\^a}ni/mani, d{\^a}hi/dahi, y{\^a}r/yar, h{\^a}kim/hakim, {\c s}{\^u}ra/{\c s}ura, rah{\^i}m/rahim, h{\^a}len/halen}; gated by collocation or next-token statistics except \emph{h{\^a}len}, which GTS registers only in the caret form (unconditional, quasi-Tier-A).
+\end{itemize}
+
+\subsection{Free-tier model census and run-time price verification}
+
+We probed \textbf{all 21 price==0 endpoints} in OpenRouter's live model listing \cite{openrouter2026} (\texttt{probe\_free3.py}; prompt==0 \emph{and} completion==0). \textbf{Four respond} with long-form Turkish output: \texttt{google/gemma-4-31b-it:free}, \texttt{google/gemma-4-26b-a4b-it:free}, \texttt{minimax/minimax-m3:free}, and \texttt{minimax/minimax-m2.7:free} (a slow reasoning endpoint, capped at 3 records). Thirteen other text-capable endpoints returned \texttt{429 free-models-per-day} on every attempt across repeated probe waves (NVIDIA Nemotron family, z-ai GLM-5.2, inclusion ling, poolside laguna s/xs, cohere north-mini-code, liquid lfm, dots notes)---provider-side free quota exhausted on run day; recorded rather than substituted (\S\ref{sec:app-census}). The remaining endpoints are non-text: \texttt{thinking-machines/inkling*} returns 403 (agentic-harness-only), \texttt{google/lyria-*} is audio-only, and \texttt{openrouter/free} is a router alias, not a model. Every generation re-verifies price==0 at run time against the live listing, and every record's \texttt{cost} field is \texttt{None}---\$0.00 spent by construction.
+
+\subsection{Checker v3: rules, gates, validation}
+
+\texttt{imla\_checker3.py} implements rules R1--R13 covering 13 TDK orthography categories: dotless-\i\ handling (R1), \emph{de/da} and \emph{-d{\i}r} (R2--R3), quotation marks (R4), apostrophe in proper nouns (R5), casing (R6), punctuation spacing (R7), numbers (R9), apostrophe misuse (R10), caret orthography (R11), informal lexicon (R12), and chat punctuation (R13). Three v3 upgrades drive the audit:
+
+\begin{itemize}
+\item \textbf{POS disambiguation for Tier B} replaces v2's flat exception list: the token following a bare nispet word is classified by a rule-based light POS tagger (\texttt{NOUN} via noun lexicon + suffix stripping; \texttt{VERB} via verb lexicon + person/tense/negation stripping; \texttt{POSTP} for \emph{boyunca, gibi, b{\"u}t{\"u}n}, \ldots; else \texttt{UNKNOWN}). Attribute reading, e.g.\ \emph{resm{\^i} evrak}, \emph{din{\^i} bayramlarda}, flags; possessive reading, e.g.\ \emph{resm{\i} {\c c}izdi}, \emph{din{\i} b{\"u}t{\"u}n}, \emph{tarihi boyunca}, \emph{fikri {\c c}ok g{\"u}zel}, passes; \texttt{UNKNOWN} $\Rightarrow$ no flag (precision-first).
+\item \textbf{Collocation and STAT gates for Tier C} implement per-word rulings with $\pm2$ root-stem matching windows (profit, state, {\c s}{\^u}ra, d{\^a}hi, rah{\^i}m, {\^a}lem, m{\^a}ni, y{\^a}r) and next-token statistics (\emph{h{\^a}l{\^a}} temporal cues; \emph{h{\^a}len} unconditional), with explicit exemptions (\emph{hal} in market senses: sebze, meyve, bal{\i}k \ldots; \emph{hakim} with bilge/hikmet collocates; weather \emph{kar}; \emph{dahi} as conjunction; \emph{yar} as cliff \ldots).
+\item \textbf{Inflected possessive forms} are gated for \emph{kar}{\i} (profit collocates only) and \emph{adet}{\i} (pre-/post-{\^a}det contexts), which bare-surface regexes miss.
+\end{itemize}
+
+All 13 Tier-C rulings are documented per word with k{\i}lavuz + live GTS evidence (RULINGS13, \S\ref{sec:app-divergence}). Validation is a hand-built set of \textbf{22 positives} (each of the 9 attribute words, \emph{k{\^a}r{\i}}, {\^a}deti, haleni, \emph{hala}-gelmedi, \emph{hal}+i, and each minimal pair) and \textbf{20 negatives} (correct-caret forms, weather \emph{kar}, \emph{adet}-as-number, possessive \emph{hala}, pazar \emph{hali}, possessive \emph{resmi/dini/tarihi/fikri/zihni}, conjunction \emph{dahi}, cliff \emph{yar}, womb \emph{rahim}, place \emph{{\c s}ura}, sage \emph{hakim}, terhis \ldots): \textbf{precision 1.00, recall 1.00} on the validation set (re-run output: \texttt{precision = 22/22 = 1.00, recall (over P) = 22/22 = 1.00}).
+
+\textbf{Known conservative gaps} (documented in the checker): \texttt{UNKNOWN} next-POS never flags, so cases like \emph{hala g{\"o}zlerim k{\i}pk{\i}rm{\i}z{\i}} (STAT gate) and dative bridges (\emph{resm{\^i} duvara ast{\i}}) are missed, and the poem-sense of \emph{m{\^a}ni} is deliberately un-gated. All missed cases \emph{undercount}, so reported drop rates are \textbf{conservative lower bounds}.
+
+\subsection{Scoring}
+
+Text-level rate: share of texts with $\geq 1$ flagged caret drop. Occurrence-level rate: \texttt{flags/(flags+caret\_ok)} over all caret-eligible occurrences. Exposure-conditional text rate: flagged texts among texts with $\geq 1$ occurrence. All rates carry \textbf{Wilson 95\% confidence intervals}; pools are reported both all-model ($n{=}651$) and same-3 ($n{=}648$, excluding the capped m2.7 records). Effect sizes are reported as risk ratio (RR) with 95\% CI, Cohen's $h$, and odds ratio (OR); contrast $p$-values are two-sided \textbf{Fisher's exact tests} computed from the JSON counts. Occurrence-level CIs treat occurrences within a text as independent; with a mean of 1.23 flagged occurrences per flagged text these intervals are mildly \emph{anti-conservative}, and the text-level rate is the unit-of-analysis-safe estimand (we keep both, labeled accordingly).
+
+\section{Results}
+\label{sec:results}
+
+All numbers below come verbatim from \texttt{imla\_results3.json} (v3 checker, 216-prompt unprimed battery, 2026-09-04 runs); CIs are Wilson 95\%. \textbf{Reporting hierarchy.} The occurrence-level contrasts are the statistically robust, primary estimands (they carry the study's power); the text-level contrasts are the unit-of-analysis-safe but lower-powered secondary estimands, and the text-level priming contrast in particular is \emph{not} significant (4.4). Effect sizes and exact $p$-values for all six headline contrasts are collected in Table~\ref{tab:contrasts}.
+
+\subsection{Headline}
+
+Across 864 prompts, 651 records completed (6 failed; the reasoning endpoint capped at 3). On the same-3 pool ($n{=}648$): \textbf{17.3\%} of texts [14.6, 20.4] contain at least one caret-orthography violation, and \textbf{61.1\%} [54.6, 67.2] of caret occurrences are dropped. 175 of 648 texts (27.0\%) contained at least one caret word (exposure); exposed texts were flagged at \textbf{64.0\%} [56.7, 70.7]. The all-model pool gives 17.2\% [14.5, 20.3] text and 60.3\% [53.8, 66.4] occurrence (Table~\ref{tab:pooled}). The phenomenon itself is not in doubt: against a 5\% text-level floor the pooled same-3 rate gives an exact binomial $p = 4.4\times10^{-30}$.
+
+\begin{table}[t]
+\centering
+\scriptsize
+\begin{tabular}{lcc}
+\toprule
+Pool & text rate & occ rate \\
+\midrule
+all models ($n{=}651^{\dagger}$) & 17.2\% [14.5,20.3] & 60.3\% [53.8,66.4] \\
+same-3 ($n{=}648$) & \textbf{17.3\%} [14.6,20.4] & \textbf{61.1\%} [54.6,67.2] \\
+\bottomrule
+\end{tabular}
+\caption{Pooled caret-drop rates (any R11), unprimed battery; text = share of texts with $\geq$1 drop, occ = occurrences dropped. $^{\dagger}$includes minimax-m2.7's three partial records (0 flags).}
+\label{tab:pooled}
+\end{table}
+
+\subsection{Per-model}
+
+Table~\ref{tab:models} reports each live endpoint. The two Gemma endpoints are \emph{within-run replications} of each other at text level (44/216 each; RR\,$=$\,1.00 [0.69, 1.45], FET $p{=}1.00$) and nearly so at occurrence level (80.9\% vs.\ 77.6\%, $h{=}+0.08$, n.s.\ range). Against minimax-m3, the \textbf{occurrence-level model spread is large and robust}: gemma pair 79.3\% (107/135) vs.\ m3 34.1\% (31/91), RR\,$=$\,2.33 [1.73, 3.14], $h{=}+0.95$ (large), OR\,$=$\,7.40, Fisher $p{=}9.2\times10^{-12}$---it survives even the strictest multiplicity threshold (4.6). The text-level model contrast (20.4\% [88/432] vs.\ 11.1\% [24/216]; RR\,$=$\,1.83 [1.20, 2.79], $h{=}+0.26$, OR\,$=$\,2.05, $p{=}2.9\times10^{-3}$) survives Holm's step-down over the six pre-specified headline claims but not full-space Bonferroni; we report it as \textbf{suggestive}. minimax-m2.7 completed 3 texts; its [0.0, 56.1] Wilson bound carries no information (endpoint too slow: $\sim$1 ok/15\,min, capped), and it is excluded from all contrasts.
+
+\begin{table*}[t]
+\centering
+\small
+\begin{tabular}{lccccc}
+\toprule
+Model & $n$ & text rate & exp-cond & occ rate & ok / fl \\
+\midrule
+gemma-4-31b:free & 216 & 20.4\% [15.5, 26.2] & 80.0\% [67.6, 88.4] & 77.6\% [66.3, 85.9] & 15 / 52 \\
+gemma-4-26b:free & 216 & 20.4\% [15.5, 26.2] & 81.5\% [69.2, 89.6] & 80.9\% [70.0, 88.5] & 13 / 55 \\
+minimax-m3:free & 216 & 11.1\% [7.6, 16.0] & 36.4\% [25.8, 48.4] & 34.1\% [25.2, 44.3] & 60 / 31 \\
+minimax-m2.7:free$^{\dagger}$ & 3 & 0.0\% n/a & 0.0\% n/a & 0.0\% n/a & 3 / 0 \\
+\bottomrule
+\end{tabular}
+\caption{Per-model caret-drop rates, unprimed battery. text = share of texts with $\geq$1 drop; exp-cond = flagged among exposed texts; occ = occurrences dropped; ok/fl = caret-ok / flagged occurrences. $^{\dagger}$capped (slow reasoning endpoint; \S\ref{sec:app-census}).}
+\label{tab:models}
+\end{table*}
+
+\subsection{Register}
+
+Table~\ref{tab:register} splits the pool by register. \textbf{Formal registers drop more} at both levels: 27.8\% (30/108) of formal texts vs.\ 15.1\% (82/543) informal---RR\,$=$\,1.84 [1.28, 2.65], $h{=}+0.31$ (small--medium), OR\,$=$\,2.16, Fisher $p{=}3.0\times10^{-3}$---and 74.5\% (35/47) vs.\ 56.6\% (103/182) of occurrences---RR\,$=$\,1.32 [1.07, 1.62], $h{=}+0.38$, OR\,$=$\,2.24, $p{=}0.030$. The text-level register contrast is \textbf{suggestive} (survives Holm(6), not 78-cell Bonferroni); the occurrence-level leg is \textbf{underpowered} (formal $n{=}47$ occurrence units; MDE $\approx$22\,pp vs.\ observed 17.9\,pp, \S4.6) and must be treated as suggestive at best. The formal axis is precisely where the caret norm matters most (resm{\^i}, tarih{\^i}, mill{\^i}, h{\"u}k{\^u}met are formal-register words), and where these models fail most under unprimed elicitation.
+
+\begin{table}[t]
+\centering
+\scriptsize
+\begin{tabular}{lcc}
+\toprule
+Register & text rate & occ rate \\
+\midrule
+informal$^{\dagger}$ ($n{=}543$) & 15.1\% [12.3,18.4] & 56.6\% [49.3,63.6] \\
+formal ($n{=}108$) & \textbf{27.8\%} [20.2,36.9] & \textbf{74.5\%} [60.5,84.7] \\
+\midrule
+delta & +12.7 pp & +17.9 pp \\
+\bottomrule
+\end{tabular}
+\caption{Register-split caret-drop rates. Register cells are the all-model pool; the informal cell is 82/543 (it includes m2.7's three partial records, 0 flags); the same-3 informal pool without them is 82/540 with identical rounded rates and CIs (source: \texttt{imla\_results3.json} register block).}
+\label{tab:register}
+\end{table}
+
+\subsection{Priming contrast (cross-run, flagged)}
+
+The v2 run (same three endpoints, $n{=}138$ texts) used prompts that \emph{spelled the caret inside them} (primed); the v3 battery is unprimed by mechanical assertion. Table~\ref{tab:priming} shows the contrast with effect sizes. \textbf{Occurrence-level, the priming effect is enormous and robust}: unprimed 61.1\% (138/226) vs.\ primed 9.0\% (15/167)---RR\,$=$\,6.80 [4.15, 11.14], $h{=}+1.19$ (very large), OR\,$=$\,15.89, Fisher $p{=}6.2\times10^{-28}$, significant at every threshold in \S4.6. \textbf{Text-level, the priming contrast is \emph{not} significant}: 17.3\% (112/648) vs.\ 10.9\% (15/138), RR\,$=$\,1.59 [0.96, 2.64], $h{=}+0.19$, OR\,$=$\,1.71, $p{=}0.074$---fails $\alpha{=}.05$ and every multiplicity correction. The priming signal lives at the occurrence level, and we make no claim that priming changes text-level violation rates. The register \emph{direction} also flips across runs (primed: informal 12.3\% [14/114] $>$ formal 4.2\% [1/24]; unprimed: formal $>$ informal), but the reversal is descriptive: its legs come from non-comparable runs, no interaction test is reported, and the tiny primed-formal $n{=}24$ makes 4.2\% a knife-edge estimate (FET on the primed legs $p{=}0.469$). As the run manifest states, \textbf{this contrast is a cross-run comparison: prompt batteries differ (primed vs.\ unprimed), it was not randomized, and topic conflation is possible}; it is reported as quasi-experimental evidence only (S7). An independently-scored v1 formal-unprimed sample (26.5\% text; 35 bare / 0 caret occurrences) sits on the same side of the contrast.
+
+\begin{table}[t]
+\centering
+\scriptsize
+\begin{tabular}{lcc}
+\toprule
+Condition & text rate & occ rate \\
+\midrule
+v2 PRIMED & 10.9\% [6.7,17.2] & 9.0\% \\
+v3 UNPRIMED & 17.3\% [14.6,20.4] & 61.1\% [54.6,67.2] \\
+\midrule
+delta & +6.4 pp & +52.1 pp \\
+\bottomrule
+\end{tabular}
+\caption{Caret-drop rate by priming condition ($n{=}138$ primed / $n{=}648$ unprimed; same three endpoints). \textbf{CROSS-RUN comparison; prompt batteries differ (primed vs.\ unprimed); not randomized---topic conflation possible.} Effect sizes and exact $p$-values in Table~\ref{tab:contrasts} and \S4.4: the occurrence-level contrast is large and robust ($p{=}6.2\times10^{-28}$); the text-level leg is \emph{not} significant ($p{=}0.074$).}
+\label{tab:priming}
+\end{table}
+
+\subsection{Secondary rules}
+
+The caret axis (R11) dominates: 112/651 texts (17.2\%) flag Tier A/B/C surfaces, while no other rule exceeds 3.4\% (Table~\ref{tab:rules}): locative \emph{de/da} (R2) 22 texts, numbers (R9) 22, casing (R6) 18, punctuation spacing (R7) 11, \emph{-d{\i}r} (R3) 10, proper-noun apostrophe (R5) 8, dotless-\i\ (R1) 6, informal lexicon (R12) 4, apostrophe misuse (R10) 2, chat punctuation (R13) 1. R4 (quotation marks) and the R11 proper-noun variant never fired. In this battery the caret axis is the story by more than 13$\times$. Per S3, all secondary-rule counts are \textbf{descriptive}: no inferential claim is made on the R1--R10/R12--R13 cells (multiplicity-bounded).
+
+\subsection{Multiplicity, power, and sensitivity}
+
+We report the study's full exploratory cell space and where the six headline contrasts stand under each multiplicity regime, with the exact disclosures verbatim:
+
+\begin{quote}\small
+\textbf{S1} ``We report 13 orthography rules ${\times}$ 3 models ${\times}$ 2 registers as the exploratory cell space (78 cells), of which 19 cells were measured; confirmatory inference is limited to the pre-specified primary rule (caret orthography, R11).''
+\end{quote}
+
+\begin{quote}\small
+\textbf{S2} ``Under a conservative Bonferroni correction over the full 78-cell space ($\alpha' = 0.05/78 = 6.4\times10^{-4}$), the occurrence-level headline contrasts remain significant---model spread (Fisher's exact $p = 9.2\times10^{-12}$) and priming ($p = 6.2\times10^{-28}$)---whereas the text-level register ($p = 3.0\times10^{-3}$) and model ($p = 2.9\times10^{-3}$) contrasts survive Holm's step-down correction over the six pre-specified headline claims but not the 78-cell Bonferroni threshold; text-level priming is not significant at $\alpha = .05$ ($p = 0.074$).''
+\end{quote}
+
+\begin{quote}\small
+\textbf{S3} ``Counts for the twelve secondary rules (R1--R10, R12, R13) are reported descriptively; no inferential claim is made on them.''
+\end{quote}
+
+\begin{quote}\small
+\textbf{S4} ``With $n = 648$ texts, pooled text-level prevalences carry Wilson 95\% half-widths of $\approx$3\,pp; the design had 80\% power ($\alpha = .05$, two-sided) to detect between-group differences of $\approx$9\,pp in a balanced split, and the register contrast (540 vs 108) could detect $\approx$11--12\,pp at 80\% power, placing the observed 12.7\,pp formal--informal gap near the study's detection limit, so smaller register differences cannot be excluded.''
+\end{quote}
+
+\begin{quote}\small
+\textbf{S5} ``Post-hoc sensitivity analysis shows the occurrence-level model contrast (135 vs 91 units; MDE $\approx$ 14\,pp vs an observed 45\,pp) and the priming contrast (226 vs 167; MDE $\approx$ 14\,pp vs an observed 52\,pp) were well powered, while the occurrence-level register contrast (47 formal occurrences; MDE $\approx$ 22\,pp vs an observed 18\,pp) was underpowered and is reported as suggestive.''
+\end{quote}
+
+\begin{quote}\small
+\textbf{S6} ``This study was not pre-registered; as retrospective disclosure: the 216-prompt battery, the 13-rule rubric, and the analysis plan (R11 primary; text-level and occurrence-level co-primary; register and model contrasts secondary) were fixed before generation, and the scoring checker (imla\_checker3) was validated on held-out material prior to the run.''
+\end{quote}
+
+\begin{quote}\small
+\textbf{S7} ``The priming contrast compares two non-randomized runs (v2 primed vs v3 unprimed) with different prompt batteries; its text-level leg is not significant (Fisher's exact $p = 0.074$), its occurrence-level leg is ($p = 6.2\times10^{-28}$), and both are reported as cross-run suggestive evidence, not causal estimates.''
+\end{quote}
+
+\begin{quote}\small
+\textbf{S8} ``The register-by-priming direction reversal (formal $>$ informal unprimed; informal $>$ formal primed) is descriptive; no interaction test is reported because its two legs come from non-comparable runs.''
+\end{quote}
+
+Table~\ref{tab:contrasts} collects the six headline contrasts with exact $p$-values and effect sizes; all were recomputed from \texttt{imla\_results3.json} counts by \texttt{rigor\_stats\_compute.py} (md5-pinned, Table~\ref{tab:md5}).
+
+\begin{table*}[t]
+\centering
+\small
+\begin{tabular}{lccccl}
+\toprule
+Contrast & $p$ (FET) & RR [95\%] & $h$ & OR & survives \\
+\midrule
+MODEL occ & $9.2\times10^{-12}$ & 2.33 [1.73, 3.14] & +0.95 & 7.40 & $\alpha=.05$, Holm(6), Bonf/78 \\
+PRIME occ & $6.2\times10^{-28}$ & 6.80 [4.15, 11.14] & +1.19 & 15.89 & $\alpha=.05$, Holm(6), Bonf/78 \\
+REG text & $3.0\times10^{-3}$ & 1.84 [1.28, 2.65] & +0.31 & 2.16 & $\alpha=.05$, Holm(6) \\
+MODEL text & $2.9\times10^{-3}$ & 1.83 [1.20, 2.79] & +0.26 & 2.05 & $\alpha=.05$, Holm(6) \\
+REG occ & 0.030 & 1.32 [1.07, 1.62] & +0.38 & 2.24 & $\alpha=.05$; underpowered \\
+PRIME text & 0.074 & 1.59 [0.96, 2.64] & +0.19 & 1.71 & none (n.s.) \\
+\bottomrule
+\end{tabular}
+\caption{The six pre-specified headline contrasts. FET = two-sided Fisher's exact; survivals: $\alpha=.05$, Holm step-down over six claims (first step 0.0083), Bonferroni over the full 78-cell space ($\alpha'{=}6.4\times10^{-4}$).}
+\label{tab:contrasts}
+\end{table*}
+
+\begin{table}[t]
+\centering
+\small
+\begin{tabular}{lrr}
+\toprule
+Rule & flagged & rate \\
+\midrule
+R11 caret orthography & 112 & 17.2\% \\
+R2 locative \emph{de/da} & 22 & 3.4\% \\
+R9 numbers & 22 & 3.4\% \\
+R6 casing & 18 & 2.8\% \\
+R7 punct. spacing & 11 & 1.7\% \\
+R3 \emph{-d{\i}r} & 10 & 1.5\% \\
+R5 proper-noun apostrophe & 8 & 1.2\% \\
+R1 dotless-\i & 6 & 0.9\% \\
+R12 informal lexicon & 4 & 0.6\% \\
+R10 apostrophe misuse & 2 & 0.3\% \\
+R13 chat punctuation & 1 & 0.2\% \\
+\bottomrule
+\end{tabular}
+\caption{Secondary-rule text counts, all-model pool ($n{=}651$). Rules not shown (R4, R8, R11 proper-noun variant) never fired.}
+\label{tab:rules}
+\end{table}
+
+\section{Discussion}
+
+\textbf{Copy vs.\ know.} The occurrence-level priming contrast is the cleanest reading of the entire study: models reproduce the caret when it is visually present in the input (9.0\% occurrence drop) and abandon it when retrieval alone must supply it (61.1\%), a robust contrast ($p{=}6.2\times10^{-28}$). This is the signature of \emph{surface imitation} rather than \emph{orthographic knowledge} \cite{magikarp2024}: caret forms are minority surface forms in training text---the bare form dominates frequency by orders of magnitude, and NoisyWikiTr documents exactly this noisy input distribution \cite{noisywiki2025}. The Tier-B result sharpens this: the caret in \emph{nispet-ek} adjectives is \emph{morphologically} mandatory ({\^i} is the adjective morpheme), yet Gemma-class endpoints keep only roughly 1 in 5 such occurrences (occurrence drop 77.6--80.9\%). At text level the same priming contrast is not significant ($p{=}0.074$), which bounds the practical claim: priming measurably shifts \emph{where} carets survive within texts, not visibly how many texts are affected.
+
+\textbf{Register gradient.} At text level the formal register drops more than informal (27.8\% vs.\ 15.1\%, suggestive; \S4.3), and under priming the direction \emph{appears} to reverse (primed formal 4.2\% outperforms primed informal 12.3\%). The reversal is descriptive only: the two legs come from non-comparable runs, the primed-formal $n{=}24$ makes 4.2\% a knife-edge estimate, and no interaction test is definable on the available data (S7--S8). Register-graded evaluations \cite{turkbench2026} must therefore specify whether the evaluated spelling is present in the prompt---otherwise they measure docility to surface exemplars, not register competence.
+
+\textbf{Model spread is large and CI-separated.} 77.6--80.9\% vs.\ 34.1\% occurrence drop; pooling would have hidden a 2.3$\times$ gap. Free-tier monitoring should always report per-model cells.
+
+\textbf{Zero-cost feasibility.} 864 prompts, 4 endpoints, full scoring, \$0.00. The Imla pipeline is a template for perpetual, judge-free orthography monitoring of any fleet of hosted models, on any rule-governed axis.
+
+\section{Limitations}
+
+\begin{itemize}
+\item \textbf{No pre-registration; retrospective disclosure (S6).} The study was not pre-registered; the battery, the 13-rule rubric, and the analysis plan were fixed before generation and the checker was validated on held-out material prior to the run (verbatim disclosure in \S4.6). The executable record (battery, checker changelog, manifests) is md5-pinned so the pilot-to-final lineage is auditable.
+\item \textbf{The priming contrast is cross-run, not randomized.} v2's primed battery and v3's unprimed battery differ in topics, prompts, and single-sample draws; the occurrence-level delta is directionally corroborated by an independent v1 sample but is not a controlled treatment (S7), and the register-direction reversal is descriptive only (S8). Any causal reading requires an interleaved randomized pair of batteries (primed vs.\ unprimed on matched topics).
+\item \textbf{Free-tier saturation.} Only 4 of 21 price==0 endpoints were live on run day; 13 were quota-blocked (429) and the reasoning endpoint produced 3 records in ~45 minutes of retries. The per-model $n{=}216$ supports $\pm5$~pp Wilson intervals, but the census itself is a snapshot of a churny market, and free routing may swap model versions underneath the study.
+\item \textbf{Checker conservatism.} \texttt{UNKNOWN}-POS is never flagged and several documented gates miss (dative bridges, \emph{hala} temporal cues, poem-sense \emph{m{\^a}ni}); all misses undercount, so rates are lower bounds. Rule-based POS is an approximation of a native speaker's judgment for genuinely ambiguous sentences (\emph{fikri}, \emph{resm{\i}} possessives remain the hardest).
+\item \textbf{Coverage.} 30 Tier-A/B/C headwords (36 flaggable surfaces with gated inflected forms) cannot represent the full lexicon of caret words; \emph{K{\^a}z{\i}m} is deliberately excluded (GTS wins over the guide); single sample per prompt at temperature 0 understates stochasticity.
+\item \textbf{Occurrence-level unit-of-analysis caveat (S9).} ``Occurrence-level confidence intervals treat occurrences within a text as independent; with a mean of 1.23 flagged occurrences per flagged text these intervals are mildly anti-conservative, and text-level estimates are the unit-of-analysis-safe estimand.'' We therefore report both levels throughout; exposure itself (27.0\% of texts) limits the text-level signal's resolution.
+\item \textbf{Register $\times$ genre confounding (S10).} ``The register contrast is partially confounded with genre-driven vocabulary (news/essay genres elicit a different mix of nispet-ek adjectives than chat material), so the formal-register effect is best read as an elicitation-surface effect.''
+\end{itemize}
+
+\section{Reproducibility}
+
+All artifacts are released (paths relative to the project root), and every quantitative claim in this paper is re-derivable from them:
+
+\begin{itemize}
+\item \texttt{scratch/pilots/prompts3.py} --- 216-prompt unprimed battery + zero-priming assertion; \texttt{python3 prompts3.py} re-prints the manifest line.
+\item \texttt{scratch/pilots/gen3.py} --- free-tier generation harness (idempotent; re-verifies price==0 at run time).
+\item \texttt{scratch/pilots/imla\_checker2.py}, \texttt{imla\_checker3.py} --- rule checker v3 (R1--R13, RULINGS13, POS/collocation gates).
+\item \texttt{scratch/pilots/smoke\_test3.py} --- 22P/20N validation (prints \texttt{precision 1.00, recall 1.00}).
+\item \texttt{scratch/pilots/gts\_verify3.py} --- live GTS headword evidence for all rulings (run 2026-09-04).
+\item \texttt{scratch/pilots/probe\_free3.py} --- 21-endpoint free-tier census transcript.
+\item \texttt{scratch/pilots/score3.py} --- Wilson-CI scorer; \texttt{scratch/pilots/imla\_results3.json} --- machine-readable results (the verbatim source of all tables in \S\ref{sec:results}).
+\item \texttt{scratch/}\allowbreak\texttt{pilots/}\allowbreak\texttt{rigor\_stats\_compute.py} --- recomputes the FET $p$-values, RRs, $h$, ORs, binomial floor, and MDEs quoted in \S4 (needs \texttt{scipy}).
+\item \texttt{scratch/pilots/generations3.jsonl} --- raw records (prompt + output + usage + price0\_verified), append-only.
+\end{itemize}
+
+Table~\ref{tab:md5} pins the exact executables and data of this run (md5, computed 2026-09-04); regeneration scripts and checksums for NoisyWikiTr's splits are recorded in the citation entry \cite{noisywiki2025}. The paper itself compiles with \texttt{tectonic} from this directory (\texttt{\$TECTONIC paper.tex}).
+
+\begin{table*}[t]
+\centering
+\scriptsize
+\begin{tabular}{@{}ll@{}}
+\toprule
+File & md5 \\
+\midrule
+\texttt{prompts3.py} & af638a2d3ee7799bddbea6778d8b209b \\
+\texttt{gen3.py} & 342256f2780f5cd5279fb7ea7fe77d42 \\
+\texttt{imla\_checker3.py} & dc41da882d4897f44d5c1425e949e5c9 \\
+\texttt{smoke\_test3.py} & b5318621bdac769dea62df7e5395485d \\
+\texttt{gts\_verify3.py} & 99b14d06506c08b96dd6ed58bb0360bf \\
+\texttt{probe\_free3.py} & 79b1d70ccecd4b0a1a420ee934658753 \\
+\texttt{score3.py} & 4266f7f81f9a6e90452592313747d225 \\
+\texttt{generations3.jsonl} & ec550dd25d3c7ce0906171177fe23686 \\
+\texttt{imla\_results3.json} & e7a721a5419c0840aceb7201c6f37b88 \\
+\texttt{rigor\_stats\_compute.py} & af7fd401ea788e26846b7fa936874da5 \\
+\texttt{imla\_full.md} (run manifest) & dca65b636d051199d0f705c86d0994ba \\
+\bottomrule
+\end{tabular}
+\caption{md5 integrity pins for the executable record of this run (computed 2026-09-04).}
+\label{tab:md5}
+\end{table*}
+
+\section{Benchmark Transparency Card}
+
+Following the Transparency-Card reporting schema proposed by \cite{transpcards2024}, we disclose:
+
+\begin{itemize}
+\item \textbf{Benchmark/axis.} Turkish caret (\emph{d{\"u}zeltme i{\c s}areti}) orthography; rule-governed, TDK-codified \cite{tdk2012} with live GTS headword adjudication \cite{gts2026}.
+\item \textbf{Battery.} 216 prompts, 5 genres, registers informal 180 / formal 36; unprimed by mechanical assertion (0 caret glyphs, 0 bare spellings); single sample, temperature 0. Topics are circumscribed, not adversarially optimized.
+\item \textbf{Models.} 4 live price==0 OpenRouter endpoints (2026-09-04 census of 21 probed); versions are provider-routed---pin by endpoint ID and date, not by checkpoint. 13 endpoints quota-blocked on run day; census recorded, not substituted \cite{openrouter2026}.
+\item \textbf{Judges.} None. Zero human annotators, zero LLM-as-judge. Ground truth = TDK guide + live GTS headwords, encoded as 13 per-pair rulings enforced by deterministic code with a documented precision-first default.
+\item \textbf{Scoring.} Wilson 95\% CIs; text, occurrence, and exposure-conditional rates; conservative lower bounds (documented un-gated cases).
+\item \textbf{Data and cost.} Raw records + results JSON released with md5 pins (Table~\ref{tab:md5}); \$0.00 total; run-time price==0 verification on every record.
+\item \textbf{Known failure modes.} Cross-run priming contrast (not randomized); free-tier saturation; rule-based POS approximation; single-sample decoding.
+\end{itemize}
+
+\section{Conclusion}
+
+Free-tier LLMs are the de facto Turkish writing surface, and they drop the caret in 61.1\% of caret occurrences when nothing in the prompt shows it to them---17.3\% of texts---while keeping it when prompted spells it. The caret axis let us measure this with zero judges, zero credits, and a fully mechanical, documented rule chain, and the executable record (battery, checker, scorer, raw data, checksums) is released in full. Orthography monitoring of this kind is cheap enough to run perpetually on free tiers, and the copy-vs-know protocol generalizes to any orthography with codified rules---including register-graded evaluation, where the priming-dependence of the register gradient is a warning to anyone who grades Turkish output without reading the prompt.
+
+\bibliography{custom}
+\bibliographystyle{acl_natbib}
+
+\appendix
+
+\section{Appendix: Battery construction details}
+\label{sec:app-battery}
+
+The 216 prompts are written in Turkish by a native speaker and are register-stereotyped: chat prompts are short informal turns (60), social-media prompts are caption-like posts (60), forum prompts are discussion-board questions (60); formal prompts are news-style summaries (18) and short essays (18). Every prompt is a neutral request with no mention of spelling, orthography, or the caret. Target-word elicitation uses circumlocution and collocation only (e.g., ``net gelir fazlas{\i}'' $\rightarrow$ \emph{k{\^a}r}; ``ulusal futbol tak{\i}m{\i}'' $\rightarrow$ \emph{mill{\^i} tak{\i}m}; ``Mekke'deki kutsal yap{\i}'' $\rightarrow$ \emph{K{\^a}be}; ``yaz{\i}c{\i} malzemesi'' $\rightarrow$ \emph{k{\^a}{\u{g}}{\i}t}). The hygiene assertion is a word-boundary regex over the full bare-spelling lexicon (including inflected \emph{hal/adet/kar} families) plus a glyph scan for \texttt{{\^a} {\^i} {\^u}}; it is hard-gated (raises SystemExit on any violation) and re-prints the manifest line on every run:
+
+\begin{quote}
+\small \texttt{[assert\_unprimed] OK: 216 prompts, 0 caret glyphs, 0 bare target spellings}\\
+\texttt{total=216\ \ informal=180\ \ formal=36\ \ (formal>=24: True, total>=200: True)}
+\end{quote}
+
+Generation parameters: temperature 0; \texttt{max\_tokens=600} (2{,}000 for minimax-m2.7); single sample per prompt. Each record stores model, genre, prompt id, prompt, output, usage, cost, finish reason, and \texttt{price0\_verified=True}.
+
+\section{Appendix: Divergence lexicon and RULINGS13}
+\label{sec:app-divergence}
+
+\textbf{Tier A} (bare never standard; GTS registers only the caret headword): \emph{k{\^a}{\u{g}}{\i}t, r{\"u}zg{\^a}r, h{\"u}k{\^u}met, sanatk{\^a}r, k{\^a}tip, k{\^a}inat, K{\^a}be, h{\^a}len} (8 headwords, plus admitted orthographic variants \emph{ruzgar}, \emph{hukumet}).
+
+\textbf{Tier B} (nispet-ek attribute adjectives, 9): \emph{mill{\^i}, resm{\^i}, din{\^i}, tarih{\^i}, ilm{\^i}, asker{\^i}, fikr{\^i}, hiss{\^i}, zihn{\^i}}. Attribute reading flags; possessive reading passes; \texttt{UNKNOWN} never flags. Excluded after live GTS check (modern dictionary registers caret-free headwords): \emph{hukuk{\^i}, idar{\^i}, siyas{\^i}, adl{\^i}, iktisad{\^i}, vicdan{\^i}, akl{\^i}, {\c s}ahs{\^i}, kanun{\^i}, keyf{\^i}, ahl{\^a}k{\^i}}.
+
+\textbf{Tier C} (13 minimal pairs): the full per-pair ruling table follows (GTS evidence strings abbreviated from \texttt{gts\_verify3.py}; \textbf{COLL} = $\pm2$ backoff-match collocation window; \textbf{STAT} = next-token statistics; \textbf{POS} = next-token part of speech).
+
+\begingroup
+\scriptsize
+\renewcommand{\arraystretch}{0.85}
+\begin{table*}[t]
+\centering
+\caption{RULINGS13 per-pair ruling table (k{\i}lavuz-vs-GTS adjudication); GTS evidence abbreviated from \texttt{gts\_verify3.py} captures; COLL $=\pm2$ backoff-match window; STAT = next-token statistics; POS = next-token part of speech.}
+\label{tab:rulings13}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{2.4cm}>{\raggedright\arraybackslash}p{3.3cm}>{\raggedright\arraybackslash}p{2.6cm}>{\raggedright\arraybackslash}p{2.9cm}>{\raggedright\arraybackslash}p{2.0cm}@{}}
+\toprule
+Pair & K{\i}lavuz (d{\"u}zeltme i{\c s}areti) & GTS (live) & Gate & Ruling \\
+\midrule
+kar/k{\^a}r & k{\^a}r ``kazan{\c c}'' & kar = ya{\u{g}}{\i}{\c s}; k{\^a}r=kazan{\c c} (both madde ba{\c s}{\i}) & COLL($\pm2$) k{\^a}r-collocates; weather-exempt & flag profit-sense only \\
+hal/h{\^a}l & h{\^a}l ``durum'' & hal = market / {\c c}{\"o}zme; h{\^a}l=durum & COLL($\pm1$) durum-collocates; pazar-EXC & flag state-sense only \\
+hala/h{\^a}l{\^a} & h{\^a}l{\^a} ``hen{\"u}z'' & hala=bibi; h{\^a}l{\^a}={\c s}imdiye kadar & STAT next-token (temporal cues) & flag temporal only; iyelik-EXC \\
+adet/{\^a}det & {\^a}det ``g{\"o}renek'' & adet = say{\i}; {\^a}det=g{\"o}renek & COLL adet-pre/post + iyelik gate & flag custom-sense only \\
+a{\c s}{\i}k/{\^a}{\c s}{\i}k & {\^a}{\c s}{\i}k ``tutkun'' & a{\c s}{\i}k = kemik; {\^a}{\c s}{\i}k=sevgi & COLL {\^a}{\c s}{\i}k-post (ol-) & flag love-sense only \\
+alem/{\^a}lem & {\^a}lem ``d{\"u}nya'' & alem = tepe s{\"u}s{\"u}; {\^a}lem=evren & COLL {\^a}lem-post (duyur\ldots) & flag world-sense only \\
+mani/m{\^a}ni & m{\^a}ni ``engel'' & mani = hastal{\i}k; m{\^a}ni = engel / {\c s}iir & COLL m{\^a}ni-post (ol-) & flag engel-sense only ({\c s}iir-sense: known miss) \\
+dahi/d{\^a}hi & d{\^a}hi ``deha sahibi'' & dahi = da (ba{\u{g}}la{\c c}); d{\^a}hi=deha & COLL d{\^a}hi-collocates & flag deha-sense only; bare ba{\u{g}}la{\c c} sanctioned \\
+yar/y{\^a}r & y{\^a}r ``sevgili'' & yar = u{\c c}urum; y{\^a}r=sevgili & COLL y{\^a}r-post (u{\u{g}}runa, olur\ldots) & flag sevgili-sense only \\
+hakim/h{\^a}kim & h{\^a}kim ``yarg{\i}{\c c}'' & hakim = bilge; h{\^a}kim = egemen / yarg{\i}{\c c} & COLL $\pm2$ minus bilge-EXEMPT & flag yarg{\i}{\c c} / egemen-sense only \\
+{\c s}ura/{\c s}{{\^u}}ra & {\c s}{{\^u}}ra ``dan{\i}{\c s}ma kurulu'' & {\c s}ura = {\c s}u yer; {\c s}{{\^u}}ra=kurul & COLL {\c s}{{\^u}}ra-collocates (karar, kurul\ldots) & flag kurul-sense only \\
+rahim/rah{\^i}m & rah{\^i}m ``Allah i{\c c}in'' & rahim = d{\"o}l yata{\u{g}}{\i}; rah{\^i}m = koruyan (Tanr{\i}) & COLL rah{\^i}m-collocates (allah, esirgeyen) & flag Allah-sense only \\
+halen/h{\^a}len & h{\^a}len ``{\c s}imdi'' & GTS registers \emph{only} h{\^a}len & STAT unconditional (quasi-Tier-A) & flag all bare, incl.\ iyelik-free \\
+\bottomrule
+\end{tabular}
+\end{table*}
+\endgroup
+
+\textbf{Documented tension.} The k{\i}lavuz lists \emph{K{\^a}z{\i}m}; GTS registers only \emph{kaz{\i}m} ``kazmak i{\c s}i''. GTS wins $\Rightarrow$ \emph{K{\^a}z{\i}m} is \textbf{not flagged and not elicited} (ruling recorded).
+
+\section{Appendix: Checker validation}
+\label{sec:app-validation}
+
+Hand-built validation set (smoke\_test3.py): \textbf{22 positives}---each of the 9 attribute words (incl.\ the three v3 additions), \emph{k{\^a}r{\i}}, {\^a}deti, haleni, \emph{hala}-gelmedi, \emph{hal}+i, and each minimal pair---and \textbf{20 negatives}---correct-caret forms, weather \emph{kar}, \emph{adet}-as-number, possessive \emph{hala}, pazar \emph{hali}, possessive \emph{resmi/dini/tarihi/fikri/zihni}, conjunction \emph{dahi}, cliff \emph{yar}, womb \emph{rahim}, place \emph{{\c s}ura}, sage \emph{hakim}, terhis \ldots{} Result (re-run):
+
+\begin{quote}
+\small \texttt{precision = 22/22 = 1.00\ \ recall (over P) = 22/22 = 1.00}\\
+\texttt{RULINGS13 rows: 13}
+\end{quote}
+
+\section{Appendix: Free-tier endpoint census}
+\label{sec:app-census}
+
+All 21 price==0 endpoints in the live \texttt{/api/v1/models} listing were probed (Turkish long-generation PASS test: short answer + 100-word news item, finish=stop, no meta-narration). Four models passed (Table~\ref{tab:models}); the probe results:
+
+\begin{itemize}
+\item \textbf{Live (4):} \texttt{google/gemma-4-31b-it:free}, \texttt{google/gemma-4-26b-a4b-it:free}, \texttt{minimax/minimax-m3:free}, \texttt{minimax/minimax-m2.7:free} (PASS*; needs \texttt{max\_tokens} $\geq$ 2{,}000; reasoning model).
+\item \textbf{Quota-blocked (13),} \texttt{429 free-models-per-day} on every attempt across repeated probe waves: nvidia nemotron ultra/super/lightning/nano-omni/content-safety, z-ai glm-5.2, inclusion ling, poolside laguna s/xs, cohere north-mini-code, liquid lfm, dots notes---recorded rather than substituted.
+\item \textbf{Non-text (3 categories):} \texttt{thinking-machines/inkling*} 403 (agentic-harness-only); \texttt{google/lyria-*} audio-only; \texttt{openrouter/free} router alias, not a distinct model.
+\end{itemize}
+
+The manifest's ``5--6 distinct models'' contract was not met on run day; this paper reports \textbf{4 delivered endpoints} with the saturation evidence above.
+
+\section{Appendix: Generation log and data integrity}
+\label{sec:app-generation}
+
+All calls went through OpenRouter with live price==0 verification at run time (\texttt{gen3.verify\_free} rejects any model not in the live listing with prompt==0 and completion==0); the \texttt{cost} field is \texttt{None} on every record---nothing was billed.
+
+\begin{itemize}
+\item \texttt{google/gemma-4-31b-it:free} --- 216 ok / 0 fail; 9{,}788 prompt / 37{,}373 completion tokens; finish stop 216.
+\item \texttt{google/gemma-4-26b-a4b-it:free} --- 216 ok / 0 fail; 9{,}751 / 39{,}399 tokens; stop 215, content\_filter 1.
+\item \texttt{minimax/minimax-m3:free} --- 216 ok / 0 fail; 47{,}458 / 58{,}409 tokens; stop 216.
+\item \texttt{minimax/minimax-m2.7:free} --- 3 ok / 6 fail: slow reasoning endpoint (mt=2000, 6 attempts; $\sim$1 ok per 15 min) capped after $\sim$45 min; provider latency, not an error.
+\item \textbf{Total:} 864 prompts, 651 ok, 6 fail; \texttt{cost} is \texttt{None} on every record $\Rightarrow$ \$0.00.
+\end{itemize}
+
+Table~\ref{tab:md5} pins the exact artifacts; \texttt{generations3.jsonl} is append-only and idempotent (each line: model, genre, prompt id, prompt, output, usage, cost, finish, ok, price0\_verified=True, timestamp).
+
+\end{document}
