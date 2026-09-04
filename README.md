@@ -62,6 +62,5 @@ diacritics are written as LaTeX commands, e.g. `\u{g}` for ğ).
 Run record / source of truth: `../scratch/pilots/imla_full.md`. Executables:
 `prompts3.py`, `gen3.py`, `imla_checker3.py`, `smoke_test3.py`,
 `gts_verify3.py`, `score3.py`, `rigor_stats_compute.py` — md5 pins in the
-paper's reproducibility appendix. Pre-registration: `../ecosystem-audit/
-pre_registration_2026-09-04.md` (retrospective registration disclosed in the
-paper, per the rigor overlay).
+paper's reproducibility appendix. Pre-registration: the study was not pre-registered; retrospective disclosure is
+in the paper's `§4.6` (S6) and Limitations.

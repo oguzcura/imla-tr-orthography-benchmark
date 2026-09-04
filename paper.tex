@@ -25,7 +25,7 @@ Turkish Caret Orthography as a Surface-Form Priming Probe for Free-Tier LLMs}
 \maketitle
 
 \begin{abstract}
-Free-tier language models have quietly become the default writing surface for Turkish text---chat, social media, forums, school essays---yet their orthographic fidelity is almost never audited, because conventional evaluation needs human or LLM judges that are expensive or contaminated. Turkish orthography offers a rare countercase: the \emph{d{\"u}zeltme i{\c s}areti} (caret; k{\^a}r/kar ``profit''/``snow'') is governed by a finite rule set that a mechanical checker can verify with zero judges. We exploit this to run the first \emph{zero-judge, unprimed} audit of caret orthography in free-tier LLMs. We build a 216-prompt battery (180 informal chat/social/forum, 36 formal news/essay) in which the caret is never spelled and 36 target surfaces are elicited only by circumlocution (mechanically asserted: 0 caret glyphs, 0 bare target spellings); we score outputs with a rule checker over 13 TDK Yaz{\i}m K{\i}lavuzu-vs-GTS rulings (RULINGS13; POS/collocation-gated; 22-positive/20-negative validation, precision 1.00, recall 1.00). Across 864 free API calls totaling \$0.00---with all four live price==0 OpenRouter endpoints verified prompt==0/completion==0 at run time---\textbf{61.1\%} [54.6, 67.2] of caret occurrences are dropped and \textbf{17.3\% of texts} (95\% CI [14.6, 20.4]) contain at least one caret drop. The same endpoints drop only 9.0\% of occurrences when prompts spell the caret (cross-run, flagged); the occurrence-level model-spread ($p{=}9.2\times10^{-12}$) and priming ($p{=}6.2\times10^{-28}$) contrasts are robust to full-space Bonferroni correction. Text-level register (27.8\% vs.\ 15.1\%) and model (20.4\% vs.\ 11.1\%) contrasts withstand Holm's step-down over the six headline claims and are reported as suggestive; the text-level priming leg is \emph{not} significant ($p{=}0.074$)---the priming signal lives at the occurrence level. Caret knowledge in these models is imitative, not productive: they copy what they see and, left unprimed, forget what they know. The full pipeline---battery, checker, scorer, data, checksums---is released for perpetual, credit-free orthography monitoring.
+Free-tier language models have quietly become the default writing surface for Turkish text---chat, social media, forums, school essays---yet their orthographic fidelity is almost never audited, because conventional evaluation needs human or LLM judges that are expensive or contaminated. Turkish orthography offers a rare countercase: the \emph{d{\"u}zeltme i{\c s}areti} (caret; k{\^a}r/kar ``profit''/``snow'') is governed by a finite rule set that a mechanical checker can verify with zero judges. We exploit this to run the first \emph{zero-judge, unprimed} audit of caret orthography in free-tier LLMs. We build a 216-prompt battery (180 informal chat/social/forum, 36 formal news/essay) in which the caret is never spelled and 36 target surfaces are elicited only by circumlocution (mechanically asserted: 0 caret glyphs, 0 bare spellings of the scored caret surfaces); we score outputs with a rule checker over 13 TDK Yaz{\i}m K{\i}lavuzu-vs-GTS rulings (RULINGS13; POS/collocation-gated; 22-positive/20-negative validation, precision 1.00, recall 1.00). Across the 864 prompt-instances of the planned battery (657 executed under the reasoning-endpoint cap; 651 completed, 6 failed) totaling \$0.00---with all four live price==0 OpenRouter endpoints verified prompt==0/completion==0 at run time---\textbf{61.1\%} [54.6, 67.2] of caret occurrences are dropped and \textbf{17.3\% of texts} (95\% CI [14.6, 20.4]) contain at least one caret drop. The same endpoints drop only 9.0\% of occurrences when prompts spell the caret (cross-run, flagged); the occurrence-level model-spread ($p{=}9.2\times10^{-12}$) and priming ($p{=}6.2\times10^{-28}$) contrasts are robust to full-space Bonferroni correction. Text-level register (27.8\% vs.\ 15.1\%) and model (20.4\% vs.\ 11.1\%) contrasts withstand Holm's step-down over the six headline claims and are reported as suggestive; the text-level priming leg is \emph{not} significant ($p{=}0.074$)---the priming signal lives at the occurrence level. Caret knowledge in these models is imitative, not productive: they copy what they see and, left unprimed, forget what they know. The full pipeline---battery, checker, scorer, data, checksums---is released for perpetual, credit-free orthography monitoring.
 \end{abstract}
 
 \section{Introduction}
@@ -37,8 +37,8 @@ Meanwhile, free-tier endpoints (price==0) have become the de facto production su
 This paper contributes:
 
 \begin{itemize}
-\item \textbf{A zero-judge audit protocol for a rule-based orthography axis.} A 216-prompt \emph{unprimed} battery in which the evaluated spelling is never shown (mechanically asserted: 0 caret glyphs, 0 bare target spellings across all prompts), scored by a rule checker encoding 13 individually-documented TDK-vs-GTS rulings (RULINGS13) with POS and collocation gates and a 22-positive/20-negative validation set (precision 1.00, recall 1.00).
-\item \textbf{The first unprimed caret-orthography audit of free-tier LLMs.} Across 864 API calls totaling \$0.00 (four live price==0 endpoints, run-time price verification), free-tier models drop the caret in \textbf{17.3\%} of texts [14.6, 20.4] and in \textbf{61.1\%} [54.6, 67.2] of caret occurrences; exposed-only texts are flagged at 64.0\% [56.7, 70.7].
+\item \textbf{A zero-judge audit protocol for a rule-based orthography axis.} A 216-prompt \emph{unprimed} battery in which the evaluated spelling is never shown (mechanically asserted: 0 caret glyphs, 0 bare spellings of the scored caret surfaces across all prompts), scored by a rule checker encoding 13 individually-documented TDK-vs-GTS rulings (RULINGS13) with POS and collocation gates and a 22-positive/20-negative validation set (precision 1.00, recall 1.00).
+\item \textbf{The first unprimed caret-orthography audit of free-tier LLMs.} Across the 864 planned prompt-instances (657 executed under the reasoning-endpoint cap; 651 completed, 6 failed) totaling \$0.00 (four live price==0 endpoints, run-time price verification), free-tier models drop the caret in \textbf{17.3\%} of texts [14.6, 20.4] and in \textbf{61.1\%} [54.6, 67.2] of caret occurrences; exposed-only texts are flagged at 64.0\% [56.7, 70.7].
 \item \textbf{Quantified priming dependence.} The same three endpoints keep carets when prompts spell them (9.0\% occurrence drop in the v2 primed cross-run) and drop them when only the topic is cued---a \emph{copy-vs-know} failure that inverts the register gradient: formal registers are \emph{better} than informal under priming, \emph{worse} unprimed. This contrast is cross-run (flagged, not randomized).
 \item \textbf{A fully released, credit-free pipeline.} Battery, checker, scorer, raw records, machine-readable results, and md5 checksums are released; the method is a template for perpetual orthography monitoring on free tiers.
 \end{itemize}
@@ -114,7 +114,7 @@ All numbers below come verbatim from \texttt{imla\_results3.json} (v3 checker, 2
 
 \subsection{Headline}
 
-Across 864 prompts, 651 records completed (6 failed; the reasoning endpoint capped at 3). On the same-3 pool ($n{=}648$): \textbf{17.3\%} of texts [14.6, 20.4] contain at least one caret-orthography violation, and \textbf{61.1\%} [54.6, 67.2] of caret occurrences are dropped. 175 of 648 texts (27.0\%) contained at least one caret word (exposure); exposed texts were flagged at \textbf{64.0\%} [56.7, 70.7]. The all-model pool gives 17.2\% [14.5, 20.3] text and 60.3\% [53.8, 66.4] occurrence (Table~\ref{tab:pooled}). The phenomenon itself is not in doubt: against a 5\% text-level floor the pooled same-3 rate gives an exact binomial $p = 4.4\times10^{-30}$.
+Of the 864 planned prompt-instances (216 prompts $\times$ 4 endpoints), 651 records completed (6 failed; 207 were never sent---the reasoning endpoint capped at 3 records). On the same-3 pool ($n{=}648$): \textbf{17.3\%} of texts [14.6, 20.4] contain at least one caret-orthography violation, and \textbf{61.1\%} [54.6, 67.2] of caret occurrences are dropped. 175 of 648 texts (27.0\%) contained at least one caret word (exposure); exposed texts were flagged at \textbf{64.0\%} [56.7, 70.7]. The all-model pool gives 17.2\% [14.5, 20.3] text and 60.3\% [53.8, 66.4] occurrence (Table~\ref{tab:pooled}). The phenomenon itself is not in doubt: against a 5\% text-level floor the pooled same-3 rate gives an exact binomial $p = 4.4\times10^{-30}$.
 
 \begin{table}[t]
 \centering
@@ -196,14 +196,14 @@ delta & +6.4 pp & +52.1 pp \\
 
 \subsection{Secondary rules}
 
-The caret axis (R11) dominates: 112/651 texts (17.2\%) flag Tier A/B/C surfaces, while no other rule exceeds 3.4\% (Table~\ref{tab:rules}): locative \emph{de/da} (R2) 22 texts, numbers (R9) 22, casing (R6) 18, punctuation spacing (R7) 11, \emph{-d{\i}r} (R3) 10, proper-noun apostrophe (R5) 8, dotless-\i\ (R1) 6, informal lexicon (R12) 4, apostrophe misuse (R10) 2, chat punctuation (R13) 1. R4 (quotation marks) and the R11 proper-noun variant never fired. In this battery the caret axis is the story by more than 13$\times$. Per S3, all secondary-rule counts are \textbf{descriptive}: no inferential claim is made on the R1--R10/R12--R13 cells (multiplicity-bounded).
+The caret axis (R11) dominates: 112/651 texts (17.2\%) flag Tier A/B/C surfaces, while no other rule exceeds 3.4\% (Table~\ref{tab:rules}): locative \emph{de/da} (R2) 22 texts, numbers (R9) 22, casing (R6) 18, punctuation spacing (R7) 11, \emph{-d{\i}r} (R3) 10, proper-noun apostrophe (R5) 8, dotless-\i\ (R1) 6, informal lexicon (R12) 4, apostrophe misuse (R10) 2, chat punctuation (R13) 1. R4 (quotation marks) and the R11 proper-noun variant never fired. In this battery the caret axis is the story by more than 5$\times$ the next rule (112 vs 22 texts). Per S3, all secondary-rule counts are \textbf{descriptive}: no inferential claim is made on the R1--R10/R12--R13 cells (multiplicity-bounded).
 
 \subsection{Multiplicity, power, and sensitivity}
 
 We report the study's full exploratory cell space and where the six headline contrasts stand under each multiplicity regime, with the exact disclosures verbatim:
 
 \begin{quote}\small
-\textbf{S1} ``We report 13 orthography rules ${\times}$ 3 models ${\times}$ 2 registers as the exploratory cell space (78 cells), of which 19 cells were measured; confirmatory inference is limited to the pre-specified primary rule (caret orthography, R11).''
+\textbf{S1} ``We report 13 orthography rules ${\times}$ 3 models ${\times}$ 2 registers as the exploratory cell space (78 cells), of which 17 register${\times}$rule cells had ${\geq}$1 flagged text; confirmatory inference is limited to the pre-specified primary rule (caret orthography, R11).''
 \end{quote}
 
 \begin{quote}\small
@@ -219,7 +219,7 @@ We report the study's full exploratory cell space and where the six headline con
 \end{quote}
 
 \begin{quote}\small
-\textbf{S5} ``Post-hoc sensitivity analysis shows the occurrence-level model contrast (135 vs 91 units; MDE $\approx$ 14\,pp vs an observed 45\,pp) and the priming contrast (226 vs 167; MDE $\approx$ 14\,pp vs an observed 52\,pp) were well powered, while the occurrence-level register contrast (47 formal occurrences; MDE $\approx$ 22\,pp vs an observed 18\,pp) was underpowered and is reported as suggestive.''
+\textbf{S5} ``Post-hoc sensitivity analysis shows the occurrence-level model contrast (135 vs 91 units; MDE $\approx$ 19\,pp vs an observed 45\,pp) and the priming contrast (226 vs 167; MDE $\approx$ 14\,pp vs an observed 52\,pp) were well powered, while the occurrence-level register contrast (47 formal occurrences; MDE $\approx$ 22\,pp vs an observed 18\,pp) was underpowered and is reported as suggestive.''
 \end{quote}
 
 \begin{quote}\small
@@ -287,7 +287,7 @@ R13 chat punctuation & 1 & 0.2\% \\
 
 \textbf{Model spread is large and CI-separated.} 77.6--80.9\% vs.\ 34.1\% occurrence drop; pooling would have hidden a 2.3$\times$ gap. Free-tier monitoring should always report per-model cells.
 
-\textbf{Zero-cost feasibility.} 864 prompts, 4 endpoints, full scoring, \$0.00. The Imla pipeline is a template for perpetual, judge-free orthography monitoring of any fleet of hosted models, on any rule-governed axis.
+\textbf{Zero-cost feasibility.} 864 planned prompt-instances across 4 endpoints (657 executed; 651 completed, 6 failed), full scoring, \$0.00. The Imla pipeline is a template for perpetual, judge-free orthography monitoring of any fleet of hosted models, on any rule-governed axis.
 
 \section{Limitations}
 
@@ -451,7 +451,7 @@ All calls went through OpenRouter with live price==0 verification at run time (\
 \item \texttt{google/gemma-4-26b-a4b-it:free} --- 216 ok / 0 fail; 9{,}751 / 39{,}399 tokens; stop 215, content\_filter 1.
 \item \texttt{minimax/minimax-m3:free} --- 216 ok / 0 fail; 47{,}458 / 58{,}409 tokens; stop 216.
 \item \texttt{minimax/minimax-m2.7:free} --- 3 ok / 6 fail: slow reasoning endpoint (mt=2000, 6 attempts; $\sim$1 ok per 15 min) capped after $\sim$45 min; provider latency, not an error.
-\item \textbf{Total:} 864 prompts, 651 ok, 6 fail; \texttt{cost} is \texttt{None} on every record $\Rightarrow$ \$0.00.
+\item \textbf{Total:} 864 planned prompt-instances $=$ 651 ok $+$ 6 fail $+$ 207 skipped (minimax-m2.7 cap); \texttt{cost} is \texttt{None} on every record ${\Rightarrow}$ \$0.00.
 \end{itemize}
 
 Table~\ref{tab:md5} pins the exact artifacts; \texttt{generations3.jsonl} is append-only and idempotent (each line: model, genre, prompt id, prompt, output, usage, cost, finish, ok, price0\_verified=True, timestamp).
