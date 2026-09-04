@@ -1,0 +1,111 @@
+\begin{thebibliography}{15}
+\providecommand{\natexlab}[1]{#1}
+
+\bibitem[{Abbas et~al.(2026)Abbas, Shamaa, and Awad}]{arabic2026}
+Chaymaa Abbas, Nour Shamaa, and Mariette Awad. 2026.
+\newblock Obscuring data contamination through translation: Evidence from
+  arabic corpora.
+\newblock In \emph{arXiv preprint arXiv:2601.14994}.
+\newblock Verified live 2026-09-04.
+
+\bibitem[{Ahuja et~al.(2024)Ahuja, Gumma, and Sitaram}]{ahuja2024}
+Sanchit Ahuja, Varun Gumma, and Sunayana Sitaram. 2024.
+\newblock Contamination report for multilingual benchmarks.
+\newblock In \emph{arXiv preprint arXiv:2410.16186}.
+\newblock Verified live 2026-09-04.
+
+\bibitem[{Dussolle et~al.(2025)Dussolle, D{\'i}az, Sato, and
+  Devine}]{mifeval2025}
+Antoine Dussolle, Andrea~Carde{\~n}a D{\'i}az, Shota Sato, and Peter Devine.
+  2025.
+\newblock {M-IFEval}: Multilingual instruction-following evaluation.
+\newblock In \emph{arXiv preprint arXiv:2502.04688}.
+\newblock Verified live 2026-09-04.
+
+\bibitem[{Ersoy and Y{\i}ld{\i}z(2024)}]{organicgec2024}
+As{\i}m Ersoy and Olcay~Taner Y{\i}ld{\i}z. 2024.
+\newblock Organic data-driven approach for turkish grammatical error correction
+  and llms.
+\newblock In \emph{arXiv preprint arXiv:2405.15320}.
+\newblock Verified live 2026-09-04.
+
+\bibitem[{Kara et~al.(2023)Kara, Sofian, Bond, and {\c S}ahin}]{gecturk2023}
+Atakan Kara, Farrin~Marouf Sofian, Andrew Bond, and G{\"o}zde~G{\"u}l {\c
+  S}ahin. 2023.
+\newblock {GECTurk}: Grammatical error correction and detection dataset for
+  turkish.
+\newblock In \emph{arXiv preprint arXiv:2309.11346}.
+\newblock Verified live 2026-09-04.
+
+\bibitem[{Land and Bartolo(2024)}]{magikarp2024}
+Sander Land and Max Bartolo. 2024.
+\newblock Fishing for {Magikarp}: Automatically detecting under-trained tokens
+  in large language models.
+\newblock In \emph{arXiv preprint arXiv:2405.05417}.
+\newblock Verified live 2026-09-04.
+
+\bibitem[{{OpenRouter}(2026)}]{openrouter2026}
+{OpenRouter}. 2026.
+\newblock {OpenRouter} api: List available models.
+\newblock \url{https://openrouter.ai/docs/api-reference/list-available-models}.
+\newblock Price==0 endpoint census; accessed 2026-09-04.
+
+\bibitem[{Shihab et~al.(2026)Shihab, Akter, and Sharma}]{powercal2026}
+Ibne~Farabi Shihab, Sanjeda Akter, and Anuj Sharma. 2026.
+\newblock When is benchmark contamination detectable? information limits and
+  power-calibrated audits.
+\newblock In \emph{arXiv preprint arXiv:2608.07914}.
+\newblock Verified live 2026-09-04.
+
+\bibitem[{Toraman et~al.(2026)}]{turkbench2026}
+{\c C}a{\u{g}}r{\i} Toraman et~al. 2026.
+\newblock {TurkBench}: A benchmark for evaluating turkish large language
+  models.
+\newblock In \emph{arXiv preprint arXiv:2601.07020}.
+\newblock Verified live 2026-09-04.
+
+\bibitem[{Turhan(2025)}]{noisywiki2025}
+Ceren~Guzel Turhan. 2025.
+\newblock \href {https://doi.org/10.5281/zenodo.15281473} {{NoisyWikiTr}}.
+\newblock Zenodo, version 1.
+\newblock Dataset; test splits md5-pinned (md5
+  6a5fdcbfae9a45d0df6dd01a4d63fcac, 63f292d1cd1fb7cc6dbc8bec207cccf4,
+  a119a13be6c06b8f02680a531ac67063); verified live 2026-09-04.
+
+\bibitem[{{T{\"u}rk Dil Kurumu}(2012)}]{tdk2012}
+{T{\"u}rk Dil Kurumu}. 2012.
+\newblock Yaz{\i}m k{\i}lavuzu.
+\newblock Ankara: TDK; section ``D{\"u}zeltme {\.I}\c{s}areti'',
+  \url{https://tdk.gov.tr/icerik/yazim-kurallari/duzeltme-isareti/}.
+\newblock Accessed 2026-09-04.
+
+\bibitem[{{T{\"u}rk Dil Kurumu}(2026)}]{gts2026}
+{T{\"u}rk Dil Kurumu}. 2026.
+\newblock G{\"u}ncel t{\"u}rk{\c c}e s{\"o}zl{\"u}k ({GTS}).
+\newblock Live dictionary API, \url{https://sozluk.gov.tr/gts}.
+\newblock Headword evidence queried live per word on 2026-09-04.
+
+\bibitem[{Xu et~al.(2024)Xu, Wang, Fan, and Liu}]{transpcards2024}
+Ruijie Xu, Zengzhi Wang, Run-Ze Fan, and Pengfei Liu. 2024.
+\newblock Benchmarking benchmark leakage in large language models.
+\newblock In \emph{arXiv preprint arXiv:2404.18824}.
+\newblock Proposes an appendix ``Transparency Card'' reporting schema; Verified
+  live 2026-09-04.
+
+\bibitem[{Yao et~al.(2024)Yao, Zhuang, Sun, Xu, Kumar, and Shang}]{yao2024}
+Feng Yao, Yufan Zhuang, Zihao Sun, Sunan Xu, Animesh Kumar, and Jingbo Shang.
+  2024.
+\newblock Data contamination can cross language barriers.
+\newblock In \emph{arXiv preprint arXiv:2406.13236}.
+\newblock Verified live 2026-09-04.
+
+\bibitem[{Y{\"u}ksel et~al.(2024)Y{\"u}ksel, K{\"o}ksal, {\c S}enel, Korhonen,
+  and Sch{\"u}tze}]{turkishmmlu2024}
+Arda Y{\"u}ksel, Abdullatif K{\"o}ksal, L{\"u}tfi~Kerem {\c S}enel, Anna
+  Korhonen, and Hinrich Sch{\"u}tze. 2024.
+\newblock {TurkishMMLU}: Measuring massive multitask language understanding in
+  turkish.
+\newblock In \emph{arXiv preprint arXiv:2407.12402}.
+\newblock Verified live 2026-09-04.
+
+\end{thebibliography}

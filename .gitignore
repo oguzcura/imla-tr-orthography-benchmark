@@ -1,5 +1,2 @@
-out/
-full.log
-full2.log
-build.log
 __pycache__/
+*.log

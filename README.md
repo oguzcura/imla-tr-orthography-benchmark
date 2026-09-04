@@ -1,66 +1,72 @@
-# Imla Paper — Turkish Orthography Fidelity of Free-Tier LLM Endpoints
+# Imla — Turkish Caret Orthography as a Surface-Form Priming Probe for Free-Tier LLMs
 
-Standalone paper draft (TMLR/workshop-ready: main text + appendix) reporting an
-orthographic audit of free-tier LLM endpoints for Turkish **düzeltme işareti**
-("imla") caret dropping. Part of the Track-B pilot series; sibling projects:
-`../ecosystem-audit/`, `../trmlu-audit/`.
+**Rule-verifiable evaluation of Turkish orthography fidelity in large language models — no human judges, zero API cost.**
 
-## Status
+Imla is a mechanical, TDK-grounded benchmark that measures whether LLMs respect Turkish orthography rules when generating text. The headline axis is the **caret (düzeltme işareti)**: free-tier LLMs drop required carets in **61.1% of occurrences** (Wilson 95% CI [54.6, 67.2]) under unprimed elicitation, and **copy the caret when it is primed** but do not produce it autonomously (occurrence-level priming contrast significant at every threshold: Fisher p = 6.2×10⁻²⁸).
 
-- Draft: **v1 2026-09-04** (anonymous `[review]` mode; flip to `preprint` for
-  named submission — author line: real name, "Independent Researcher",
-  oguzemrecura@gmail.com, github oguzcura).
-- Compiles clean under **tectonic**; zero overfull boxes, zero undefined
-  citations, Turkish glyphs verified in the PDF text layer.
-- Every number in the paper is transcribed verbatim from
-  `../scratch/pilots/imla_results3.json` (the machine-readable run record).
-- No numbers are re-derived inside the paper; all statistics are reproduced by
-  the pinned `rigor_stats_compute.py` (md5 published in the appendix).
+## Key results (all statistical claims multiplicity-corrected; see paper §4.6)
 
-## Content map
+| Contrast | Finding | Standing |
+|---|---|---|
+| Occurrence-level caret drop (unprimed, N=648, 3 models) | **61.1%** [54.6, 67.2] | robust (Fisher p = 9.2×10⁻¹² model spread) |
+| Text-level violation rate | **17.3%** [14.6, 20.4] | robust for model spread |
+| Priming (unprimed vs primed, occurrence-level) | 61.1% vs 9.0% | **robust** (p = 6.2×10⁻²⁸) |
+| Priming (text-level) | 17.3% vs 10.9% | **n.s.** (p = 0.074) — reported as exploratory |
+| Register (unprimed, text-level) | formal 27.8% vs informal 15.1% | suggestive (Holm-only) |
 
-- `paper.tex` — main draft (introduction / related work / method / results /
-  discussion / limitations / reproducibility appendix / 13-rule adjudication
-  table / generation log / transparency card).
-- `custom.bib` — 15 references, **every entry live-verified 2026-09-04**
-  (arXiv Atom API, Zenodo, TDK); no fabricated metadata.
-- `acl.sty` + `acl_natbib.bst` — ACL 2023 style files (copied from
-  `../trmlu-audit/paper/`), used for the TMLR/workshop format.
-- `lineno.sty` — vendored CTAN copy (distro copy carries an invalid UTF-8 byte
-  that breaks tectonic's license report).
-- `out/paper.pdf` — latest build.
+Design: 13 mechanical TDK rules (9/10 base rules + caret families verified verbatim against live TDK/GTS pages), 24-word GTS-validated caret lexicon with POS-based disambiguation, zero LLM judges, all evaluations on **price==0 free-tier endpoints** (4/21 live on 2026-09-04; $0.00 total spend).
 
-## Build
+## Paper
 
-```sh
-export PATH=$HOME/bin:$PATH   # tectonic static binary
-cd research/imla-paper
-rm -rf out && mkdir -p out
-tectonic --keep-intermediates -o out paper.tex
+- `paper.tex` / `paper.pdf` — *"Copy What You See, Forget What You Know: Turkish Caret Orthography as a Surface-Form Priming Probe for Free-Tier LLMs"* (preprint build; anonymous review copy preserved on the `review-anon` branch)
+- 12 pages incl. appendices: RULINGS13 adjudication table, generation log, reproducibility, transparency card (per Xu et al. 2024)
+
+## Repository structure
+
+```
+paper.tex, paper.pdf   — manuscript (ACL preprint style, tectonic-compiled)
+custom.bib             — 15 entries, every key live-verified (arXiv/Zenodo/TDK)
+imla_checker3.py       — mechanical TDK-rule checker (P=1.00/R=1.00 on 20+20 validation)
+prompts3.py, gen3.py   — unprimed prompt battery + free-tier generation (price==0 enforced)
+score3.py              — scoring + Wilson CIs
+smoke_test3.py         — checker validation suite
+probe_free3.py         — free-tier endpoint prober
+gts_caret_results.json — GTS-validated caret lexicon evidence
+generations3.jsonl     — 657 model outputs (md5-pinned in the paper appendix)
 ```
 
-Verify: `python3 _verify_pdf.py` (glyph/integrity checks), `python3 _scan_log.py`
-(overfull sweep), `python3 _ascii_check.py` (source stays 7-bit ASCII; Turkish
-diacritics are written as LaTeX commands, e.g. `\u{g}` for ğ).
+## Reproduce
 
-## Key results (all verbatim from imla_results3.json)
+```bash
+python probe_free3.py <model:free>...   # probe endpoints (price must be 0)
+python gen3.py  google/gemma-4-31b-it:free google/gemma-4-26b-a4b-it:free minimax/minimax-m3:free
+python score3.py generations3.jsonl     # per-model, per-register rates + Wilson 95% CIs
+python smoke_test3.py                   # checker validation (20 positive + 20 negative)
+```
 
-- 864 prompts; 651 completed records (6 failed; reasoning endpoint capped at 3);
-  $0.00 total spend (free-tier endpoints, live price verification).
-- Text-level caret-drop rate: **17.3%** [14.6, 20.4]; occurrence-level: **61.1%**
-  [54.6, 67.2] (same-3 pool, n=648).
-- Per-model text rates 20.4%–20.4% (both Gemma endpoints) vs minimax-m3;
-  occurrence rates 77.6%–80.9% vs **34.1%**.
-- Register: formal news/essay **27.8%** vs informal **15.1%** (RR=1.84
-  [1.28, 2.65]).
-- Priming comparison (v2 PRIMED vs v3 UNPRIMED): **cross-run caveat flagged in
-  the paper**; occurrence-level contrast 9.0% vs 61.1% is the cleanest reading;
-  the text-level contrast is underpowered (n.s.).
+Inputs are md5-pinned (manifest in paper appendix Table 6); the pipeline is idempotent and re-runnable.
 
-## Provenance
+## License
 
-Run record / source of truth: `../scratch/pilots/imla_full.md`. Executables:
-`prompts3.py`, `gen3.py`, `imla_checker3.py`, `smoke_test3.py`,
-`gts_verify3.py`, `score3.py`, `rigor_stats_compute.py` — md5 pins in the
-paper's reproducibility appendix. Pre-registration: the study was not pre-registered; retrospective disclosure is
-in the paper's `§4.6` (S6) and Limitations.
+- **Code** (checker, prompts, scoring, probing scripts): [MIT](LICENSE-CODE)
+- **Paper text, tables, and results**: [CC BY 4.0](LICENSE)
+
+## Citation
+
+```bibtex
+@misc{cura2026imla,
+  author = {Cura, O\u{g}uz Emre},
+  title  = {Copy What You See, Forget What You Know: Turkish Caret Orthography as a Surface-Form Priming Probe for Free-Tier LLMs},
+  year   = {2026},
+  note   = {Independent Research},
+  howpublished = {\url{https://github.com/oguzcura/imla-tr-orthography-benchmark}}
+}
+```
+
+## Contact
+
+Oğuz Emre Cura · oguzemrecura@gmail.com · [github.com/oguzcura](https://github.com/oguzcura) · Independent Researcher
+
+---
+
+*Research conducted with disclosed AI-assisted workflows; every number in this repository re-derivable from the pinned artifacts.*

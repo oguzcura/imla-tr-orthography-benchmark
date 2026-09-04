@@ -1,0 +1,21 @@
+cff-version: 1.2.0
+message: "If you use this software/benchmark, please cite it as below."
+title: "Copy What You See, Forget What You Know: Turkish Caret Orthography as a Surface-Form Priming Probe for Free-Tier LLMs"
+abstract: >-
+  A rule-verifiable, judge-free evaluation of Turkish orthography fidelity in
+  free-tier LLMs. Headline result: models drop TDK-required carets in 61.1% of
+  occurrences under unprimed elicitation but reproduce them when primed.
+  Companion benchmark: https://github.com/oguzcura/tr-mmlu-ecosystem-audit
+authors:
+  - family-names: Cura
+    given-names: Oğuz Emre
+    email: oguzemrecura@gmail.com
+    website: https://github.com/oguzcura
+keywords:
+  - Turkish NLP
+  - orthography
+  - LLM evaluation
+  - benchmark
+  - zero-cost evaluation
+date-released: "2026-09-04"
+license: CC-BY-4.0
