@@ -1,0 +1,626 @@
+{
+ "kar|kâr": {
+  "verdict": "MINIMAL-PAIR (bare headword separately registered)",
+  "caret_q": [
+   [
+    "kar",
+    ""
+   ],
+   [
+    "kâr",
+    ""
+   ]
+  ],
+  "bare_q": [
+   [
+    "kar",
+    ""
+   ],
+   [
+    "kâr",
+    ""
+   ]
+  ],
+  "note": "kazanç / yağış"
+ },
+ "hal|hâl": {
+  "verdict": "MINIMAL-PAIR (bare headword separately registered)",
+  "caret_q": [
+   [
+    "hal",
+    ""
+   ],
+   [
+    "hal",
+    ""
+   ],
+   [
+    "hal",
+    ""
+   ],
+   [
+    "hâl",
+    ""
+   ]
+  ],
+  "bare_q": [
+   [
+    "hal",
+    ""
+   ],
+   [
+    "hal",
+    ""
+   ],
+   [
+    "hal",
+    ""
+   ]
+  ],
+  "note": "durum / pazar yeri"
+ },
+ "adet|âdet": {
+  "verdict": "MINIMAL-PAIR (bare headword separately registered)",
+  "caret_q": [
+   [
+    "adet",
+    ""
+   ],
+   [
+    "âdet",
+    ""
+   ]
+  ],
+  "bare_q": [
+   [
+    "adet",
+    ""
+   ],
+   [
+    "âdet",
+    ""
+   ]
+  ],
+  "note": "sayı / gelenek"
+ },
+ "hala|hâlâ": {
+  "verdict": "MINIMAL-PAIR (bare headword separately registered)",
+  "caret_q": [
+   [
+    "hala",
+    ""
+   ],
+   [
+    "hâlâ",
+    ""
+   ]
+  ],
+  "bare_q": [
+   [
+    "hala",
+    ""
+   ],
+   [
+    "hâlâ",
+    ""
+   ]
+  ],
+  "note": "akrabalık / henüz"
+ },
+ "alem|âlem": {
+  "verdict": "MINIMAL-PAIR (bare headword separately registered)",
+  "caret_q": [
+   [
+    "alem",
+    ""
+   ],
+   [
+    "âlem",
+    ""
+   ]
+  ],
+  "bare_q": [
+   [
+    "alem",
+    ""
+   ],
+   [
+    "âlem",
+    ""
+   ]
+  ],
+  "note": "eğlence / dünya"
+ },
+ "asik|âşık": {
+  "verdict": "CARET-REQUIRED (bare spelling not a separate headword)",
+  "caret_q": [
+   [
+    "aşık",
+    ""
+   ],
+   [
+    "âşık",
+    ""
+   ]
+  ],
+  "bare_q": [],
+  "note": "kemik / tutkun (intek: real bare is 'aşık')"
+ },
+ "kağıt|kâğıt": {
+  "verdict": "CARET-REQUIRED (bare spelling not a separate headword)",
+  "caret_q": [
+   [
+    "kâğıt",
+    ""
+   ]
+  ],
+  "bare_q": [
+   [
+    "kâğıt",
+    ""
+   ]
+  ],
+  "note": "unambiguous"
+ },
+ "ruzgar|rüzgâr": {
+  "verdict": "CARET-REQUIRED (bare spelling not a separate headword)",
+  "caret_q": [
+   [
+    "rüzgâr",
+    ""
+   ]
+  ],
+  "bare_q": [],
+  "note": "unambiguous"
+ },
+ "milli|millî": {
+  "verdict": "MINIMAL-PAIR (bare headword separately registered)",
+  "caret_q": [
+   [
+    "millî",
+    ""
+   ],
+   [
+    "milli",
+    ""
+   ]
+  ],
+  "bare_q": [
+   [
+    "millî",
+    ""
+   ],
+   [
+    "milli",
+    ""
+   ]
+  ],
+  "note": "national"
+ },
+ "resmi|resmî": {
+  "verdict": "CARET-REQUIRED (bare spelling not a separate headword)",
+  "caret_q": [
+   [
+    "resmî",
+    ""
+   ]
+  ],
+  "bare_q": [
+   [
+    "resmî",
+    ""
+   ]
+  ],
+  "note": "official"
+ },
+ "dini|dinî": {
+  "verdict": "CARET-REQUIRED (bare spelling not a separate headword)",
+  "caret_q": [
+   [
+    "dinî",
+    ""
+   ]
+  ],
+  "bare_q": [
+   [
+    "dinî",
+    ""
+   ]
+  ],
+  "note": "religious"
+ },
+ "hukumet|hükûmet": {
+  "verdict": "CARET-REQUIRED (bare spelling not a separate headword)",
+  "caret_q": [
+   [
+    "hükûmet",
+    ""
+   ]
+  ],
+  "bare_q": [],
+  "note": "govt; also no-caret 'hükümet'"
+ },
+ "sanatkar|sanatkâr": {
+  "verdict": "CARET-REQUIRED (bare spelling not a separate headword)",
+  "caret_q": [
+   [
+    "sanatkâr",
+    ""
+   ]
+  ],
+  "bare_q": [
+   [
+    "sanatkâr",
+    ""
+   ]
+  ],
+  "note": "craftsman"
+ },
+ "sura|şûra": {
+  "verdict": "CARET-REQUIRED (bare spelling not a separate headword)",
+  "caret_q": [
+   [
+    "şura",
+    ""
+   ],
+   [
+    "şûra",
+    ""
+   ]
+  ],
+  "bare_q": [
+   [
+    "sura",
+    ""
+   ]
+  ],
+  "note": "council; also 'şura'"
+ },
+ "hakim|hâkim": {
+  "verdict": "MINIMAL-PAIR (bare headword separately registered)",
+  "caret_q": [
+   [
+    "hakim",
+    ""
+   ],
+   [
+    "hâkim",
+    ""
+   ]
+  ],
+  "bare_q": [
+   [
+    "hakim",
+    ""
+   ],
+   [
+    "hâkim",
+    ""
+   ]
+  ],
+  "note": "judge; also hakîm (wise)"
+ },
+ "dahi|dâhi": {
+  "verdict": "MINIMAL-PAIR (bare headword separately registered)",
+  "caret_q": [
+   [
+    "dahi",
+    ""
+   ],
+   [
+    "dâhi",
+    ""
+   ]
+  ],
+  "bare_q": [
+   [
+    "dahi",
+    ""
+   ],
+   [
+    "dâhi",
+    ""
+   ]
+  ],
+  "note": "genius; also conj 'dahi'"
+ },
+ "mudil|müdil": {
+  "verdict": "CARET-FREE (exclude)",
+  "caret_q": [],
+  "bare_q": [],
+  "note": "non-word control"
+ },
+ "mani|mâni": {
+  "verdict": "MINIMAL-PAIR (bare headword separately registered)",
+  "caret_q": [
+   [
+    "mani",
+    ""
+   ],
+   [
+    "mâni",
+    ""
+   ],
+   [
+    "mâni",
+    ""
+   ]
+  ],
+  "bare_q": [
+   [
+    "mani",
+    ""
+   ],
+   [
+    "mâni",
+    ""
+   ],
+   [
+    "mâni",
+    ""
+   ]
+  ],
+  "note": "obstacle — pilot-1 claims caret-free"
+ },
+ "Kazım|Kâzım": {
+  "verdict": "CARET-FREE (exclude)",
+  "caret_q": [
+   [
+    "kazım",
+    ""
+   ]
+  ],
+  "bare_q": [
+   [
+    "kazım",
+    ""
+   ]
+  ],
+  "note": "proper noun — pilot-1 claims caret-free"
+ },
+ "Kabe|Kâbe": {
+  "verdict": "CARET-REQUIRED (bare spelling not a separate headword)",
+  "caret_q": [
+   [
+    "Kâbe",
+    ""
+   ]
+  ],
+  "bare_q": [
+   [
+    "Kâbe",
+    ""
+   ]
+  ],
+  "note": "proper noun"
+ },
+ "kainat|kâinat": {
+  "verdict": "CARET-REQUIRED (bare spelling not a separate headword)",
+  "caret_q": [
+   [
+    "kâinat",
+    ""
+   ]
+  ],
+  "bare_q": [
+   [
+    "kâinat",
+    ""
+   ]
+  ],
+  "note": "universe"
+ },
+ "katip|kâtip": {
+  "verdict": "CARET-REQUIRED (bare spelling not a separate headword)",
+  "caret_q": [
+   [
+    "kâtip",
+    ""
+   ]
+  ],
+  "bare_q": [
+   [
+    "kâtip",
+    ""
+   ]
+  ],
+  "note": "clerk"
+ },
+ "dahil|dâhil": {
+  "verdict": "MINIMAL-PAIR (bare headword separately registered)",
+  "caret_q": [
+   [
+    "dâhil",
+    ""
+   ],
+   [
+    "dahil",
+    ""
+   ]
+  ],
+  "bare_q": [
+   [
+    "dâhil",
+    ""
+   ],
+   [
+    "dahil",
+    ""
+   ]
+  ],
+  "note": "included — borderline, check anlam"
+ },
+ "ilmi|ilmî": {
+  "verdict": "CARET-REQUIRED (bare spelling not a separate headword)",
+  "caret_q": [
+   [
+    "ilmî",
+    ""
+   ]
+  ],
+  "bare_q": [
+   [
+    "ilmî",
+    ""
+   ]
+  ],
+  "note": "scientific (adj)"
+ },
+ "askeri|askerî": {
+  "verdict": "CARET-REQUIRED (bare spelling not a separate headword)",
+  "caret_q": [
+   [
+    "askerî",
+    ""
+   ]
+  ],
+  "bare_q": [
+   [
+    "askerî",
+    ""
+   ]
+  ],
+  "note": "military (adj)"
+ },
+ "tarihi|tarihî": {
+  "verdict": "CARET-REQUIRED (bare spelling not a separate headword)",
+  "caret_q": [
+   [
+    "tarihî",
+    ""
+   ]
+  ],
+  "bare_q": [
+   [
+    "tarihî",
+    ""
+   ]
+  ],
+  "note": "historical (adj)"
+ },
+ "sanat|sânat": {
+  "verdict": "CARET-FREE (exclude)",
+  "caret_q": [
+   [
+    "sanat",
+    ""
+   ]
+  ],
+  "bare_q": [
+   [
+    "sanat",
+    ""
+   ]
+  ],
+  "note": "control non-word"
+ },
+ "gazete|gazete": {
+  "verdict": "CARET-FREE (exclude)",
+  "caret_q": [
+   [
+    "gazete",
+    ""
+   ]
+  ],
+  "bare_q": [
+   [
+    "gazete",
+    ""
+   ]
+  ],
+  "note": "control"
+ },
+ "imam|imam": {
+  "verdict": "CARET-FREE (exclude)",
+  "caret_q": [
+   [
+    "imam",
+    ""
+   ]
+  ],
+  "bare_q": [
+   [
+    "imam",
+    ""
+   ]
+  ],
+  "note": "control"
+ },
+ "dunya|dünya": {
+  "verdict": "CARET-FREE (exclude)",
+  "caret_q": [
+   [
+    "dünya",
+    ""
+   ],
+   [
+    "Dünya",
+    ""
+   ]
+  ],
+  "bare_q": [],
+  "note": "control"
+ },
+ "var|vâr": {
+  "verdict": "CARET-FREE (exclude)",
+  "caret_q": [
+   [
+    "var",
+    ""
+   ]
+  ],
+  "bare_q": [
+   [
+    "var",
+    ""
+   ]
+  ],
+  "note": "non-word control"
+ },
+ "yar|yâr": {
+  "verdict": "MINIMAL-PAIR (bare headword separately registered)",
+  "caret_q": [
+   [
+    "yar",
+    ""
+   ],
+   [
+    "yâr",
+    ""
+   ]
+  ],
+  "bare_q": [
+   [
+    "yar",
+    ""
+   ],
+   [
+    "yâr",
+    ""
+   ]
+  ],
+  "note": "beloved / cliff"
+ },
+ "hukumdar|hükümdar": {
+  "verdict": "CARET-FREE (exclude)",
+  "caret_q": [
+   [
+    "hükümdar",
+    ""
+   ]
+  ],
+  "bare_q": [],
+  "note": "sovereign — caret on ? check"
+ },
+ "şurasi|şûrası": {
+  "verdict": "CARET-FREE (exclude)",
+  "caret_q": [
+   [
+    "şurası",
+    ""
+   ]
+  ],
+  "bare_q": [],
+  "note": "council-of"
+ }
+}

@@ -1,0 +1,247 @@
+{
+ "meta": {
+  "run": "imla full study, unprimed battery",
+  "checker": "imla_checker3 (RULINGS13)",
+  "n_prompts": 216,
+  "price0": "all models verified prompt==0 AND completion==0 at run time"
+ },
+ "models": {
+  "google/gemma-4-26b-a4b-it:free": {
+   "n": 216,
+   "exposed": 54,
+   "flag_texts": 44,
+   "text_rate": 0.2037037037037037,
+   "text_ci": [
+    0.15539093487633374,
+    0.2623712986379828
+   ],
+   "exposed_rate": 0.8148148148148148,
+   "exposed_ci": [
+    0.6916405210859737,
+    0.8961731450557435
+   ],
+   "flags": 55,
+   "caret_ok": 13,
+   "occ_rate": 0.8088235294117647,
+   "occ_ci": [
+    0.6998935844411937,
+    0.8847270601561942
+   ],
+   "r12_rate": 0.0,
+   "r13_rate": 0.0,
+   "base_rate": 0.1388888888888889
+  },
+  "google/gemma-4-31b-it:free": {
+   "n": 216,
+   "exposed": 55,
+   "flag_texts": 44,
+   "text_rate": 0.2037037037037037,
+   "text_ci": [
+    0.15539093487633374,
+    0.2623712986379828
+   ],
+   "exposed_rate": 0.8,
+   "exposed_ci": [
+    0.6763512073441295,
+    0.884477851408011
+   ],
+   "flags": 52,
+   "caret_ok": 15,
+   "occ_rate": 0.7761194029850746,
+   "occ_ci": [
+    0.6629303378191275,
+    0.8593626892343988
+   ],
+   "r12_rate": 0.0,
+   "r13_rate": 0.0,
+   "base_rate": 0.09259259259259259
+  },
+  "minimax/minimax-m2.7:free": {
+   "n": 3,
+   "exposed": 3,
+   "flag_texts": 0,
+   "text_rate": 0.0,
+   "text_ci": [
+    0.0,
+    0.5614970356393196
+   ],
+   "exposed_rate": 0.0,
+   "exposed_ci": [
+    0.0,
+    0.5614970356393196
+   ],
+   "flags": 0,
+   "caret_ok": 3,
+   "occ_rate": 0.0,
+   "occ_ci": [
+    0.0,
+    0.5614970356393196
+   ],
+   "r12_rate": 0.0,
+   "r13_rate": 0.0,
+   "base_rate": 0.6666666666666666
+  },
+  "minimax/minimax-m3:free": {
+   "n": 216,
+   "exposed": 66,
+   "flag_texts": 24,
+   "text_rate": 0.1111111111111111,
+   "text_ci": [
+    0.07581155873906091,
+    0.16000137274847956
+   ],
+   "exposed_rate": 0.36363636363636365,
+   "exposed_ci": [
+    0.25806983021301316,
+    0.4842035946506746
+   ],
+   "flags": 31,
+   "caret_ok": 60,
+   "occ_rate": 0.34065934065934067,
+   "occ_ci": [
+    0.2515136928921746,
+    0.4427128580058189
+   ],
+   "r12_rate": 0.018518518518518517,
+   "r13_rate": 0.004629629629629629,
+   "base_rate": 0.19907407407407407
+  }
+ },
+ "register": {
+  "informal": {
+   "n": 543,
+   "exposed": 139,
+   "flag_texts": 82,
+   "text_rate": 0.15101289134438306,
+   "text_ci": [
+    0.12335387466054336,
+    0.183575046245817
+   ],
+   "exposed_rate": 0.5899280575539568,
+   "exposed_ci": [
+    0.506814790048031,
+    0.6682044249319524
+   ],
+   "flags": 103,
+   "caret_ok": 79,
+   "occ_rate": 0.5659340659340659,
+   "occ_ci": [
+    0.4932994901533699,
+    0.6358428451709008
+   ],
+   "r12_rate": 0.007366482504604052,
+   "r13_rate": 0.001841620626151013,
+   "base_rate": 0.14548802946593
+  },
+  "formal": {
+   "n": 108,
+   "exposed": 39,
+   "flag_texts": 30,
+   "text_rate": 0.2777777777777778,
+   "text_ci": [
+    0.20205026448325122,
+    0.3687707845255491
+   ],
+   "exposed_rate": 0.7692307692307693,
+   "exposed_ci": [
+    0.6166374264149461,
+    0.8735419593568189
+   ],
+   "flags": 35,
+   "caret_ok": 12,
+   "occ_rate": 0.7446808510638298,
+   "occ_ci": [
+    0.6049182435213335,
+    0.8474684602847101
+   ],
+   "r12_rate": 0.0,
+   "r13_rate": 0.0,
+   "base_rate": 0.14814814814814814
+  }
+ },
+ "pooled": {
+  "n": 651,
+  "exposed": 178,
+  "flag_texts": 112,
+  "text_rate": 0.17204301075268819,
+  "text_ci": [
+   0.14499597627245436,
+   0.20293779577449408
+  ],
+  "exposed_rate": 0.6292134831460674,
+  "exposed_ci": [
+   0.5562266365912619,
+   0.6967409775215805
+  ],
+  "flags": 138,
+  "caret_ok": 91,
+  "occ_rate": 0.6026200873362445,
+  "occ_ci": [
+   0.5380488312691883,
+   0.6638052553089278
+  ],
+  "r12_rate": 0.006144393241167435,
+  "r13_rate": 0.0015360983102918587,
+  "base_rate": 0.14592933947772657
+ },
+ "v2_crossrun": {
+  "primed": {
+   "text_rate": 0.10869565217391304,
+   "text_n": 138,
+   "text_k": 15,
+   "occ_rate": 0.08982035928143713,
+   "occ_n": 167,
+   "label": "v2 PRIMED (caret spellings inside prompts)"
+  },
+  "primed_register": {
+   "informal": {
+    "k": 14,
+    "n": 114
+   },
+   "formal": {
+    "k": 1,
+    "n": 24
+   }
+  },
+  "flag": "CROSS-RUN comparison; prompt batteries differ (primed vs unprimed); not randomized — topic conflation possible"
+ },
+ "pooled_same3": {
+  "n": 648,
+  "exposed": 175,
+  "flag_texts": 112,
+  "text_rate": 0.1728395061728395,
+  "text_ci": [
+   0.14567715689897565,
+   0.20385792678889275
+  ],
+  "exposed_rate": 0.64,
+  "exposed_ci": [
+   0.5665800372802986,
+   0.7074056498557205
+  ],
+  "flags": 138,
+  "caret_ok": 88,
+  "occ_rate": 0.6106194690265486,
+  "occ_ci": [
+   0.5457049529872716,
+   0.6718363045533142
+  ],
+  "r12_rate": 0.006172839506172839,
+  "r13_rate": 0.0015432098765432098,
+  "base_rate": 0.14351851851851852
+ },
+ "per_rule_text_counts": {
+  "R10_apostrophe_misuse": 2,
+  "R11_caret": 112,
+  "R12_informal_lexicon": 4,
+  "R13_chat_punct": 1,
+  "R1_dotless_i": 6,
+  "R2_locative": 22,
+  "R3_bildirme_dir": 10,
+  "R5_apostrophe_proper": 8,
+  "R6_casing": 18,
+  "R7_punct_spacing": 11,
+  "R9_numbers": 22
+ },
+ "rulings13_count": 13
+}

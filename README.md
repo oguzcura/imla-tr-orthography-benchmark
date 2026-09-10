@@ -14,37 +14,47 @@ Imla is a mechanical, TDK-grounded benchmark that measures whether LLMs respect 
 | Priming (text-level) | 17.3% vs 10.9% | **n.s.** (p = 0.074) — reported as exploratory |
 | Register (unprimed, text-level) | formal 27.8% vs informal 15.1% | suggestive (Holm-only) |
 
-Design: 13 mechanical TDK rules (9/10 base rules + caret families verified verbatim against live TDK/GTS pages), 24-word GTS-validated caret lexicon with POS-based disambiguation, zero LLM judges, all evaluations on **price==0 free-tier endpoints** (4/21 live on 2026-09-04; $0.00 total spend).
+Design: 13 mechanical TDK rules (9/10 base rules + caret families verified verbatim against live TDK/GTS pages), 36 flaggable caret surface forms (30 GTS-validated headwords) with POS-based disambiguation, zero LLM judges, all evaluations on **price==0 free-tier endpoints** (4/21 live on 2026-09-04; $0.00 total spend).
 
 ## Paper
 
 - `paper.tex` / `paper.pdf` — *"Copy What You See, Forget What You Know: Turkish Caret Orthography as a Surface-Form Priming Probe for Free-Tier LLMs"* (preprint build; anonymous review copy preserved on the `review-anon` branch)
-- 12 pages incl. appendices: RULINGS13 adjudication table, generation log, reproducibility, transparency card (per Xu et al. 2024)
+- 13 pages incl. appendices: RULINGS13 adjudication table, generation log, reproducibility, transparency card (per Xu et al. 2024)
 
 ## Repository structure
 
+The executable record of the run lives under `scratch/pilots/` (paths relative to the repo root, matching the paper's §7 manifest). The 11 files pinned in the paper's md5 table (Table 7) are byte-identical; the remaining two support artifacts (`imla_checker2.py`, `gts_caret_results.json`) complete the §7 manifest:
+
 ```
-paper.tex, paper.pdf   — manuscript (ACL preprint style, tectonic-compiled)
-custom.bib             — 15 entries, every key live-verified (arXiv/Zenodo/TDK)
-imla_checker3.py       — mechanical TDK-rule checker (P=1.00/R=1.00 on 22+20 validation)
-prompts3.py, gen3.py   — unprimed prompt battery + free-tier generation (price==0 enforced)
-score3.py              — scoring + Wilson CIs
-smoke_test3.py         — checker validation suite
-probe_free3.py         — free-tier endpoint prober
-gts_caret_results.json — GTS-validated caret lexicon evidence
-generations3.jsonl     — 657 model outputs (md5-pinned in the paper appendix)
+paper.tex, paper.pdf          — manuscript (ACL preprint style, tectonic-compiled)
+custom.bib                    — 15 entries, every key live-verified (arXiv/Zenodo/TDK)
+scratch/pilots/
+  imla_checker3.py            — mechanical TDK-rule checker v3 (P=1.00/R=1.00 on 22+20 validation)
+  prompts3.py                 — 216-prompt unprimed battery + zero-priming assertion
+  gen3.py                     — free-tier generation harness (idempotent; re-verifies price==0)
+  score3.py                   — scoring + Wilson 95% CIs
+  smoke_test3.py              — checker validation suite (22 positive + 20 negative)
+  probe_free3.py              — free-tier endpoint prober (reads OPENROUTER_API_KEY from env)
+  gts_verify3.py              — live GTS headword evidence for all rulings
+  gts_caret_results.json      — GTS-validated caret lexicon evidence
+  generations3.jsonl          — 657 model outputs (md5-pinned in the paper appendix)
+  imla_results3.json          — machine-readable results (verbatim source of all tables)
+  rigor_stats_compute.py      — recomputes every inferential number (needs scipy)
+  imla_full.md                — run manifest & verdict
 ```
 
 ## Reproduce
 
+From the repo root (scripts resolve their sibling modules relative to `scratch/pilots/`):
+
 ```bash
-python probe_free3.py <model:free>...   # probe endpoints (price must be 0)
-python gen3.py  google/gemma-4-31b-it:free google/gemma-4-26b-a4b-it:free minimax/minimax-m3:free
-python score3.py generations3.jsonl     # per-model, per-register rates + Wilson 95% CIs
-python smoke_test3.py                   # checker validation (22 positive + 20 negative)
+python scratch/pilots/probe_free3.py <model:free>...   # probe endpoints (price must be 0; needs OPENROUTER_API_KEY)
+python scratch/pilots/gen3.py  google/gemma-4-31b-it:free google/gemma-4-26b-a4b-it:free minimax/minimax-m3:free
+python scratch/pilots/score3.py                        # per-model, per-register rates + Wilson 95% CIs
+python scratch/pilots/smoke_test3.py                   # checker validation (22 positive + 20 negative)
 ```
 
-Inputs are md5-pinned (manifest in paper appendix Table 6); the pipeline is idempotent and re-runnable.
+`gen3.py` appends new runs to `scratch/pilots/generations3.jsonl`; scoring the released file reproduces the paper's numbers. Inputs are md5-pinned (manifest in paper appendix Table 7); the pipeline is idempotent and re-runnable.
 
 ## License
 
