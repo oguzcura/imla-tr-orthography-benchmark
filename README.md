@@ -26,7 +26,7 @@ Design: 13 mechanical TDK rules (9/10 base rules + caret families verified verba
 ```
 paper.tex, paper.pdf   — manuscript (ACL preprint style, tectonic-compiled)
 custom.bib             — 15 entries, every key live-verified (arXiv/Zenodo/TDK)
-imla_checker3.py       — mechanical TDK-rule checker (P=1.00/R=1.00 on 20+20 validation)
+imla_checker3.py       — mechanical TDK-rule checker (P=1.00/R=1.00 on 22+20 validation)
 prompts3.py, gen3.py   — unprimed prompt battery + free-tier generation (price==0 enforced)
 score3.py              — scoring + Wilson CIs
 smoke_test3.py         — checker validation suite
@@ -41,7 +41,7 @@ generations3.jsonl     — 657 model outputs (md5-pinned in the paper appendix)
 python probe_free3.py <model:free>...   # probe endpoints (price must be 0)
 python gen3.py  google/gemma-4-31b-it:free google/gemma-4-26b-a4b-it:free minimax/minimax-m3:free
 python score3.py generations3.jsonl     # per-model, per-register rates + Wilson 95% CIs
-python smoke_test3.py                   # checker validation (20 positive + 20 negative)
+python smoke_test3.py                   # checker validation (22 positive + 20 negative)
 ```
 
 Inputs are md5-pinned (manifest in paper appendix Table 6); the pipeline is idempotent and re-runnable.

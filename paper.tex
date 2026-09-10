@@ -172,7 +172,7 @@ formal ($n{=}108$) & \textbf{27.8\%} [20.2,36.9] & \textbf{74.5\%} [60.5,84.7] \
 delta & +12.7 pp & +17.9 pp \\
 \bottomrule
 \end{tabular}
-\caption{Register-split caret-drop rates. Register cells are the all-model pool; the informal cell is 82/543 (it includes m2.7's three partial records, 0 flags); the same-3 informal pool without them is 82/540 with identical rounded rates and CIs (source: \texttt{imla\_results3.json} register block).}
+\caption{Register-split caret-drop rates. Register cells are the all-model pool; the informal cell is 82/543 (it includes m2.7's three partial records, 0 flags); the same-3 informal pool without them is 82/540---15.2\% [12.4, 18.5] vs.\ the 15.1\% [12.3, 18.4] shown, all three values within 0.1 pp across pools (source: \texttt{imla\_results3.json} register block).}
 \label{tab:register}
 \end{table}
 
@@ -250,7 +250,7 @@ MODEL occ & $9.2\times10^{-12}$ & 2.33 [1.73, 3.14] & +0.95 & 7.40 & $\alpha=.05
 PRIME occ & $6.2\times10^{-28}$ & 6.80 [4.15, 11.14] & +1.19 & 15.89 & $\alpha=.05$, Holm(6), Bonf/78 \\
 REG text & $3.0\times10^{-3}$ & 1.84 [1.28, 2.65] & +0.31 & 2.16 & $\alpha=.05$, Holm(6) \\
 MODEL text & $2.9\times10^{-3}$ & 1.83 [1.20, 2.79] & +0.26 & 2.05 & $\alpha=.05$, Holm(6) \\
-REG occ & 0.030 & 1.32 [1.07, 1.62] & +0.38 & 2.24 & $\alpha=.05$; underpowered \\
+REG occ & 0.030 & 1.32 [1.07, 1.62] & +0.38 & 2.24 & $\alpha=.05$ (raw); not Holm(6) \\
 PRIME text & 0.074 & 1.59 [0.96, 2.64] & +0.19 & 1.71 & none (n.s.) \\
 \bottomrule
 \end{tabular}

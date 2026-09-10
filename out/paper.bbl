@@ -47,7 +47,8 @@ Sander Land and Max Bartolo. 2024.
 \bibitem[{{OpenRouter}(2026)}]{openrouter2026}
 {OpenRouter}. 2026.
 \newblock {OpenRouter} api: List available models.
-\newblock \url{https://openrouter.ai/docs/api-reference/list-available-models}.
+\newblock API documentation,
+  \url{https://openrouter.ai/docs/api/api-reference/models/list-all-models-and-their-properties}.
 \newblock Price==0 endpoint census; accessed 2026-09-04.
 
 \bibitem[{Shihab et~al.(2026)Shihab, Akter, and Sharma}]{powercal2026}
